@@ -1,0 +1,222 @@
+/* ============================================
+   دکمه تغییر تم - Floating با Scroll
+   ============================================ */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-normal) var(--easing);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: var(--z-fixed);
+  
+  /* شروع از حالت مخفی */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px) scale(0.8);
+}
+
+/* حالت نمایش */
+.theme-toggle-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Hover Effect */
+.theme-toggle-btn:hover {
+  transform: translateY(0) scale(1.1);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-color-strong);
+}
+
+/* Active Effect */
+.theme-toggle-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Background Animation */
+.theme-toggle-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  opacity: 0;
+  transition: opacity var(--transition-normal) var(--easing);
+  border-radius: inherit;
+}
+
+.theme-toggle-btn:hover::before {
+  opacity: 0.1;
+}
+
+/* ============================================
+   آیکون‌ها
+   ============================================ */
+.theme-icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transition: all var(--transition-normal) var(--easing);
+  opacity: 0;
+  transform: rotate(180deg) scale(0);
+}
+
+.theme-icon.active {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* آیکون خورشید */
+.sun-icon {
+  color: #f59e0b;
+}
+
+/* آیکون ماه */
+.moon-icon {
+  color: #60a5fa;
+}
+
+/* ============================================
+   انیمیشن Glow
+   ============================================ */
+.theme-toggle-btn:hover .sun-icon.active {
+  filter: drop-shadow(0 0 8px #f59e0b);
+  animation: sunGlow 2s ease-in-out infinite;
+}
+
+.theme-toggle-btn:hover .moon-icon.active {
+  filter: drop-shadow(0 0 8px #60a5fa);
+  animation: moonGlow 3s ease-in-out infinite;
+}
+
+@keyframes sunGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #f59e0b);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px #f59e0b) drop-shadow(0 0 24px #fbbf24);
+  }
+}
+
+@keyframes moonGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #60a5fa);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px #60a5fa) drop-shadow(0 0 24px #93c5fd);
+  }
+}
+
+/* ============================================
+   Pulse Animation (هنگام ظاهر شدن)
+   ============================================ */
+.theme-toggle-btn.visible {
+  animation: pulseIn 0.6s var(--easing);
+}
+
+@keyframes pulseIn {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.8);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   حالت موبایل
+   ============================================ */
+@media (max-width: 768px) {
+  .theme-toggle-btn {
+    width: 48px;
+    height: 48px;
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .theme-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 16px;
+    left: 16px;
+  }
+  
+  .theme-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-btn,
+  .theme-icon,
+  .theme-toggle-btn::before {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .theme-toggle-btn.visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .theme-toggle-btn {
+    border-width: 2px;
+  }
+}
+
+/* ============================================
+   Focus State
+   ============================================ */
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+/* ============================================
+   Loading State (اختیاری)
+   ============================================ */
+.theme-toggle-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.theme-toggle-btn.loading .theme-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

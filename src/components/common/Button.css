@@ -1,0 +1,342 @@
+/* ============================================
+   Button Component Styles
+   ============================================ */
+
+.btn {
+  /* Base */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-normal) var(--easing);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn:active:not(.btn-disabled) {
+  transform: scale(0.98);
+}
+
+/* ============================================
+   Sizes
+   ============================================ */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: var(--radius-md);
+  min-height: 32px;
+}
+
+.btn-md {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-lg);
+  min-height: 40px;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+  min-height: 48px;
+}
+
+/* ============================================
+   Variants
+   ============================================ */
+
+/* Primary */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(.btn-disabled) {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  opacity: 0;
+  transition: opacity var(--transition-normal) var(--easing);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary .btn-content,
+.btn-primary .btn-icon,
+.btn-primary .btn-spinner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Secondary */
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(.btn-disabled) {
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Outline */
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-outline:hover:not(.btn-disabled) {
+  background: var(--primary-light);
+  border-color: var(--primary-hover);
+  color: var(--primary-hover);
+}
+
+/* Ghost */
+.btn-ghost {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-ghost:hover:not(.btn-disabled) {
+  background: var(--bg-hover);
+  border-color: var(--border-color-strong);
+}
+
+/* Danger */
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger), #dc2626);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-danger:hover:not(.btn-disabled) {
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Success */
+.btn-success {
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success:hover:not(.btn-disabled) {
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Warning */
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning), #d97706);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-warning:hover:not(.btn-disabled) {
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   States
+   ============================================ */
+
+/* Full Width */
+.btn-fullwidth {
+  width: 100%;
+}
+
+/* Loading */
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Disabled */
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Icons
+   ============================================ */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.btn-sm .btn-icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+.btn-lg .btn-icon svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* ============================================
+   Spinner
+   ============================================ */
+.btn-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 1.25em;
+  height: 1.25em;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner-circle {
+  stroke-dasharray: 63;
+  stroke-dashoffset: 20;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 63;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -63;
+  }
+}
+
+/* ============================================
+   Button Group
+   ============================================ */
+.btn-group {
+  display: inline-flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-group .btn {
+  flex: 0 1 auto;
+}
+
+/* ============================================
+   Hover Effects
+   ============================================ */
+.btn:not(.btn-disabled):hover {
+  box-shadow: var(--shadow-md);
+}
+
+.btn:not(.btn-disabled):active {
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .btn-sm {
+    padding: 0.4rem 0.875rem;
+    font-size: 0.8125rem;
+    min-height: 28px;
+  }
+
+  .btn-md {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    min-height: 36px;
+  }
+
+  .btn-lg {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+    min-height: 44px;
+  }
+
+  .btn-group {
+    gap: 0.375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-group {
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    flex: 1 1 auto;
+  }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .spinner,
+  .spinner-circle {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .btn {
+    border-width: 2px;
+  }
+
+  .btn-ghost {
+    border-width: 2px;
+  }
+}

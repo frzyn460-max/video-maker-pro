@@ -1,0 +1,298 @@
+/* ============================================
+   Card Component Styles
+   ============================================ */
+
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-normal) var(--easing);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   Variants
+   ============================================ */
+.card-default {
+  box-shadow: var(--shadow-sm);
+}
+
+.card-outlined {
+  box-shadow: none;
+  border-width: 2px;
+}
+
+.card-elevated {
+  box-shadow: var(--shadow-lg);
+  border: none;
+}
+
+/* ============================================
+   Hoverable
+   ============================================ */
+.card-hoverable:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary);
+}
+
+/* ============================================
+   Clickable
+   ============================================ */
+.card-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-clickable:hover {
+  border-color: var(--primary);
+}
+
+.card-clickable:active {
+  transform: scale(0.98);
+}
+
+.card-clickable:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Card Parts
+   ============================================ */
+
+/* Header */
+.card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg-secondary);
+}
+
+/* Body */
+.card-body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* Footer */
+.card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Image */
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-tertiary);
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow) var(--easing);
+}
+
+.card-hoverable:hover .card-image img {
+  transform: scale(1.05);
+}
+
+/* Title */
+.card-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+/* Description */
+.card-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============================================
+   Compact Card
+   ============================================ */
+.card-compact .card-header {
+  padding: 1rem 1.25rem;
+}
+
+.card-compact .card-body {
+  padding: 1.25rem;
+}
+
+.card-compact .card-footer {
+  padding: 0.875rem 1.25rem;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.card-loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.card-loading .card-body {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+.card-empty .card-body {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.card-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.card-empty-text {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   Grid Layout
+   ============================================ */
+.card-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.card-grid-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 1200px) {
+  .card-grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-description {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .card-grid {
+    gap: 1rem;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-animate {
+  animation: cardSlideIn 0.4s var(--easing);
+}
+
+/* Stagger Animation for Grid */
+.card-grid .card:nth-child(1) { animation-delay: 0.05s; }
+.card-grid .card:nth-child(2) { animation-delay: 0.1s; }
+.card-grid .card:nth-child(3) { animation-delay: 0.15s; }
+.card-grid .card:nth-child(4) { animation-delay: 0.2s; }
+.card-grid .card:nth-child(5) { animation-delay: 0.25s; }
+.card-grid .card:nth-child(6) { animation-delay: 0.3s; }
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card-image img,
+  .card-animate {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .card {
+    border-width: 2px;
+  }
+}
