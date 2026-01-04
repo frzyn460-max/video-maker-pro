@@ -1,0 +1,275 @@
+{
+  "effects": [
+    {
+      "id": "typewriter",
+      "name": "تایپ‌نویس",
+      "nameEn": "Typewriter",
+      "description": "نمایش متن به صورت حرف به حرف",
+      "icon": "⌨️",
+      "category": "text",
+      "default": true,
+      "settings": {
+        "speed": {
+          "label": "سرعت تایپ",
+          "type": "range",
+          "min": 20,
+          "max": 200,
+          "default": 50,
+          "unit": "ms"
+        }
+      }
+    },
+    {
+      "id": "kenburns",
+      "name": "Ken Burns",
+      "nameEn": "Ken Burns",
+      "description": "زوم آرام روی تصویر پس‌زمینه",
+      "icon": "🔍",
+      "category": "background",
+      "default": true,
+      "settings": {
+        "intensity": {
+          "label": "شدت زوم",
+          "type": "range",
+          "min": 1,
+          "max": 1.5,
+          "default": 1.2,
+          "step": 0.1
+        }
+      }
+    },
+    {
+      "id": "particles",
+      "name": "ذرات شناور",
+      "nameEn": "Particles",
+      "description": "ذرات متحرک در پس‌زمینه",
+      "icon": "✨",
+      "category": "overlay",
+      "default": false,
+      "settings": {
+        "count": {
+          "label": "تعداد ذرات",
+          "type": "range",
+          "min": 10,
+          "max": 100,
+          "default": 50
+        },
+        "speed": {
+          "label": "سرعت حرکت",
+          "type": "range",
+          "min": 0.1,
+          "max": 2,
+          "default": 0.5,
+          "step": 0.1
+        }
+      }
+    },
+    {
+      "id": "vignette",
+      "name": "وینیت",
+      "nameEn": "Vignette",
+      "description": "تاریکی در گوشه‌های صفحه",
+      "icon": "🌓",
+      "category": "overlay",
+      "default": true,
+      "settings": {
+        "intensity": {
+          "label": "شدت",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "default": 0.7,
+          "step": 0.1
+        }
+      }
+    },
+    {
+      "id": "glow",
+      "name": "درخشش متن",
+      "nameEn": "Text Glow",
+      "description": "افکت نورانی دور متن",
+      "icon": "💫",
+      "category": "text",
+      "default": true,
+      "settings": {
+        "intensity": {
+          "label": "شدت درخشش",
+          "type": "range",
+          "min": 0,
+          "max": 40,
+          "default": 20,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "id": "grainy",
+      "name": "دانه‌بندی فیلم",
+      "nameEn": "Film Grain",
+      "description": "بافت دانه‌ای مانند فیلم‌های قدیمی",
+      "icon": "📹",
+      "category": "overlay",
+      "default": false,
+      "settings": {
+        "opacity": {
+          "label": "شفافیت",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "default": 0.15,
+          "step": 0.05
+        }
+      }
+    },
+    {
+      "id": "shake",
+      "name": "لرزش دوربین",
+      "nameEn": "Camera Shake",
+      "description": "لرزش سبک صفحه",
+      "icon": "📳",
+      "category": "animation",
+      "default": false,
+      "settings": {
+        "intensity": {
+          "label": "شدت لرزش",
+          "type": "range",
+          "min": 1,
+          "max": 10,
+          "default": 2,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "id": "glitch",
+      "name": "افکت Glitch",
+      "nameEn": "Glitch",
+      "description": "خرابی دیجیتال",
+      "icon": "⚡",
+      "category": "animation",
+      "default": false,
+      "settings": {
+        "frequency": {
+          "label": "فرکانس",
+          "type": "range",
+          "min": 0.5,
+          "max": 3,
+          "default": 1,
+          "step": 0.5,
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "id": "chromatic",
+      "name": "انحراف رنگی",
+      "nameEn": "Chromatic Aberration",
+      "description": "جدایی کانال‌های RGB",
+      "icon": "🌈",
+      "category": "animation",
+      "default": false,
+      "settings": {
+        "offset": {
+          "label": "میزان جابجایی",
+          "type": "range",
+          "min": 1,
+          "max": 10,
+          "default": 3,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "id": "blur",
+      "name": "تاری حرکتی",
+      "nameEn": "Motion Blur",
+      "description": "تاری در حین حرکت",
+      "icon": "💨",
+      "category": "animation",
+      "default": false,
+      "settings": {
+        "amount": {
+          "label": "میزان تاری",
+          "type": "range",
+          "min": 0,
+          "max": 20,
+          "default": 5,
+          "unit": "px"
+        }
+      }
+    },
+    {
+      "id": "scanlines",
+      "name": "خطوط اسکن",
+      "nameEn": "Scanlines",
+      "description": "خطوط افقی مانند تلویزیون‌های قدیمی",
+      "icon": "📺",
+      "category": "overlay",
+      "default": false,
+      "settings": {
+        "opacity": {
+          "label": "شفافیت",
+          "type": "range",
+          "min": 0,
+          "max": 1,
+          "default": 0.1,
+          "step": 0.05
+        }
+      }
+    },
+    {
+      "id": "colorize",
+      "name": "رنگ‌آمیزی",
+      "nameEn": "Colorize",
+      "description": "اعمال فیلتر رنگی",
+      "icon": "🎨",
+      "category": "filter",
+      "default": false,
+      "settings": {
+        "hue": {
+          "label": "رنگ",
+          "type": "range",
+          "min": 0,
+          "max": 360,
+          "default": 0,
+          "unit": "deg"
+        },
+        "saturation": {
+          "label": "اشباع",
+          "type": "range",
+          "min": 0,
+          "max": 200,
+          "default": 100,
+          "unit": "%"
+        }
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "text",
+      "name": "متن",
+      "icon": "📝"
+    },
+    {
+      "id": "background",
+      "name": "پس‌زمینه",
+      "icon": "🖼️"
+    },
+    {
+      "id": "overlay",
+      "name": "پوشش",
+      "icon": "🎭"
+    },
+    {
+      "id": "animation",
+      "name": "انیمیشن",
+      "icon": "🎬"
+    },
+    {
+      "id": "filter",
+      "name": "فیلتر",
+      "icon": "🌈"
+    }
+  ]
+}
