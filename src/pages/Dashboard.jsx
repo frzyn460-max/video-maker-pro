@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ⬅️ این خط رو اضافه کنید
 import { motion } from 'framer-motion';
 import Navbar from '../components/layout/Navbar';
 import ThemeToggle from '../components/common/ThemeToggle';
@@ -282,9 +283,12 @@ const Dashboard = () => {
 };
 
 // ============================================
-// Project Card Component
+// به‌روزرسانی ProjectCard در Dashboard.jsx
+// این کد باید جایگزین ProjectCard فعلی شود
 // ============================================
+
 const ProjectCard = ({ project, viewMode, index, onDelete, onDuplicate }) => {
+  const navigate = useNavigate(); // اضافه کنید
   const [menuOpen, setMenuOpen] = useState(false);
 
   const statusColors = {
@@ -295,6 +299,11 @@ const ProjectCard = ({ project, viewMode, index, onDelete, onDuplicate }) => {
 
   const status = statusColors[project.status] || statusColors.draft;
 
+  // تابع ورود به ادیتور
+  const handleEdit = () => {
+    navigate(`/editor/${project.id}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -304,6 +313,7 @@ const ProjectCard = ({ project, viewMode, index, onDelete, onDuplicate }) => {
       <Card
         hoverable
         clickable
+        onClick={handleEdit} // اضافه شد
         className={`project-card project-card-${viewMode}`}
       >
         <CardBody>
@@ -326,13 +336,13 @@ const ProjectCard = ({ project, viewMode, index, onDelete, onDuplicate }) => {
 
               {menuOpen && (
                 <div className="project-card-dropdown">
-                  <button onClick={() => { setMenuOpen(false); }}>
+                  <button onClick={(e) => { e.stopPropagation(); handleEdit(); setMenuOpen(false); }}>
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     ویرایش
                   </button>
-                  <button onClick={() => { onDuplicate(project.id); setMenuOpen(false); }}>
+                  <button onClick={(e) => { e.stopPropagation(); onDuplicate(project.id); setMenuOpen(false); }}>
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
@@ -340,7 +350,7 @@ const ProjectCard = ({ project, viewMode, index, onDelete, onDuplicate }) => {
                   </button>
                   <button 
                     className="danger" 
-                    onClick={() => { onDelete(project.id, project.name); setMenuOpen(false); }}
+                    onClick={(e) => { e.stopPropagation(); onDelete(project.id, project.name); setMenuOpen(false); }}
                   >
                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>

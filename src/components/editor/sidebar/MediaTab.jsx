@@ -7,7 +7,7 @@ import React, { useRef } from 'react';
 import useMediaStore from '../../../store/useMediaStore';
 import useUIStore from '../../../store/useUIStore';
 import { validateImageFile, validateVideoFile, validateAudioFile } from '../../../utils/validators';
-import { formatFileSize } from '../../../utils/formatters';
+import { formatBytes } from '../../../utils/formatters';
 
 const MediaTab = () => {
   const {
@@ -198,7 +198,7 @@ const MediaTab = () => {
             {/* اطلاعات فایل */}
             <div className="text-xs opacity-70 space-y-1">
               <p>📁 {bgType === 'image' ? bgImage?.name : bgVideo?.name}</p>
-              <p>💾 {formatFileSize(bgType === 'image' ? bgImage?.size : bgVideo?.size)}</p>
+              <p>💾 {formatBytes(bgType === 'image' ? bgImage?.size : bgVideo?.size)}</p>
             </div>
 
             {/* تنظیمات پس‌زمینه */}
@@ -295,7 +295,7 @@ const MediaTab = () => {
             {/* اطلاعات فایل */}
             <div className="text-xs opacity-70 space-y-1 p-3 bg-white/5 rounded-lg">
               <p>🎵 {audio.name}</p>
-              <p>💾 {formatFileSize(audio.size)}</p>
+              <p>💾 {formatBytes(audio.size)}</p>
             </div>
 
             {/* دکمه پخش */}
