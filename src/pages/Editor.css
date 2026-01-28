@@ -1,6 +1,5 @@
 /* ============================================
-   Editor Page Styles
-   مسیر: src/pages/Editor.css
+   Editor Page - استایل ساده و تمیز
    ============================================ */
 
 .editor-page {
@@ -12,18 +11,16 @@
 }
 
 /* ============================================
-   Editor Header
+   Header
    ============================================ */
 .editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
+  background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
-  height: 73px;
-  flex-shrink: 0;
+  height: 70px;
   z-index: 100;
 }
 
@@ -35,7 +32,6 @@
 
 .editor-header-right {
   display: flex;
-  align-items: center;
   gap: 0.75rem;
 }
 
@@ -48,28 +44,474 @@
 .editor-project-name {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary);
   margin: 0;
+  color: var(--text-primary);
 }
 
 .editor-project-status {
   font-size: 0.75rem;
   color: var(--text-secondary);
-  font-weight: 600;
 }
 
 /* ============================================
-   Editor Main
+   Main
    ============================================ */
 .editor-main {
   flex: 1;
   display: flex;
   overflow: hidden;
-  position: relative;
 }
 
 /* ============================================
-   Loading State
+   Sidebar
+   ============================================ */
+.editor-sidebar {
+  width: 400px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+  font-size: 1.125rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.sidebar-close {
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s;
+}
+
+.sidebar-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Tabs */
+.sidebar-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Content */
+.sidebar-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tab-content h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.tab-stats {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.sidebar-textarea {
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 200px;
+  line-height: 1.6;
+}
+
+.sidebar-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.sidebar-help {
+  padding: 0.75rem 1rem;
+  background: var(--primary-light);
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Templates */
+.templates-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.templates-section h4 {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.template-btn {
+  padding: 0.75rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.template-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+}
+
+/* Settings */
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+}
+
+.setting-group label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+.setting-group strong {
+  color: var(--primary);
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.color-input {
+  width: 100%;
+  height: 50px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* Media Upload */
+.media-upload {
+  padding: 1rem;
+}
+
+.upload-placeholder {
+  padding: 3rem 2rem;
+  background: var(--bg-primary);
+  border: 2px dashed var(--border-color);
+  border-radius: 0.75rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.upload-placeholder p {
+  margin: 0.5rem 0;
+}
+
+.upload-hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   Viewport
+   ============================================ */
+.editor-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s;
+}
+
+.sidebar-toggle:hover {
+  background: var(--bg-hover);
+}
+
+.viewport-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.viewport-content {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.viewport-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.viewport-empty h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.viewport-empty p {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Scene Display */
+.scene-display {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.scene-text {
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  max-width: 90%;
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Controls */
+.viewport-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.controls-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.control-btn {
+  width: 3rem;
+  height: 3rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  color: var(--text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-btn:hover {
+  background: var(--bg-hover);
+}
+
+.control-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.control-btn-play {
+  width: 4rem;
+  height: 4rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.control-btn-play:hover {
+  background: var(--primary-hover);
+}
+
+.controls-info {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   Theme Toggle
+   ============================================ */
+.theme-toggle-fixed {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+
+.theme-toggle-fixed:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================
+   Loading
    ============================================ */
 .editor-loading {
   height: 100vh;
@@ -77,43 +519,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
   background: var(--bg-primary);
 }
 
 .editor-loading p {
-  font-size: 1rem;
   color: var(--text-secondary);
 }
 
 /* ============================================
    Responsive
    ============================================ */
-@media (max-width: 768px) {
-  .editor-header {
-    padding: 1rem;
-    height: 65px;
-  }
-
-  .editor-project-name {
-    font-size: 1rem;
-  }
-
-  .editor-header-left {
-    gap: 1rem;
-  }
-
-  .editor-header-right {
-    gap: 0.5rem;
+@media (max-width: 992px) {
+  .editor-sidebar {
+    width: 350px;
   }
 }
 
-@media (max-width: 480px) {
-  .editor-header {
-    padding: 0.75rem;
+@media (max-width: 768px) {
+  .editor-sidebar {
+    position: fixed;
+    right: 0;
+    top: 70px;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    z-index: 50;
   }
-
-  .editor-project-info {
-    display: none;
+  
+  .sidebar-tabs {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
