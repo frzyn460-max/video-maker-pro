@@ -1,419 +1,170 @@
-// ============================================
-// Editor Store - مدیریت ادیتور
-// ============================================
+/* 
+ * مسیر: /video-maker-pro/src/store/useEditorStore.js
+ */
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { DEFAULT_SETTINGS } from '../utils/constants';
-import { parseScenes, generateId } from '../utils/helpers';
+import { persist } from 'zustand/middleware';
 
 const useEditorStore = create(
-  devtools(
+  persist(
     (set, get) => ({
-      // ============================================
-      // State
-      // ============================================
+      // صحنه‌ها
       scenes: [],
       currentSceneIndex: 0,
-      text: '',
-      settings: { ...DEFAULT_SETTINGS },
-      
-      // وضعیت پخش
       isPlaying: false,
-      isPaused: false,
-      isRecording: false,
-      
-      // Timeline
-      timelineZoom: 1,
-      currentTime: 0,
-      totalDuration: 0,
-      
-      // History (Undo/Redo)
-      history: [],
-      historyIndex: -1,
-      maxHistory: 50,
-      
-      // UI State
-      activeTab: 'editor',
-      sidebarCollapsed: false,
-      timelineCollapsed: false,
 
-      // ============================================
-      // مدیریت متن و صحنه‌ها
-      // ============================================
-      setText: (text) => {
-        set({ text });
-        get().parseText();
-      },
-
-      parseText: () => {
-        const { text } = get();
-        const scenes = parseScenes(text);
-        
-        set({ 
-          scenes,
-          totalDuration: scenes.reduce((sum, scene) => 
-            sum + (scene.duration || 5), 0
-          ),
-        });
-        
-        get().saveToHistory();
-      },
-
-      // ============================================
-      // مدیریت صحنه‌ها
-      // ============================================
-      addScene: (scene) => {
-        const newScene = {
-          id: generateId(),
-          title: scene.title || '',
-          content: scene.content || '',
-          duration: scene.duration || 5,
-          transition: scene.transition || 'fade',
-          ...scene,
-        };
-
-        set((state) => ({
-          scenes: [...state.scenes, newScene],
-          totalDuration: state.totalDuration + newScene.duration,
-        }));
-
-        get().saveToHistory();
-      },
-
-      updateScene: (index, updates) => {
-        set((state) => {
-          const newScenes = [...state.scenes];
-          const oldDuration = newScenes[index].duration || 5;
-          newScenes[index] = { ...newScenes[index], ...updates };
-          
-          const newDuration = newScenes[index].duration || 5;
-          const durationDiff = newDuration - oldDuration;
-
-          return {
-            scenes: newScenes,
-            totalDuration: state.totalDuration + durationDiff,
-          };
-        });
-
-        get().saveToHistory();
-      },
-
-      deleteScene: (index) => {
-        set((state) => {
-          const deletedScene = state.scenes[index];
-          const newScenes = state.scenes.filter((_, i) => i !== index);
-          
-          return {
-            scenes: newScenes,
-            currentSceneIndex: Math.max(0, Math.min(state.currentSceneIndex, newScenes.length - 1)),
-            totalDuration: state.totalDuration - (deletedScene.duration || 5),
-          };
-        });
-
-        get().saveToHistory();
-      },
-
-      moveScene: (fromIndex, toIndex) => {
-        set((state) => {
-          const newScenes = [...state.scenes];
-          const [movedScene] = newScenes.splice(fromIndex, 1);
-          newScenes.splice(toIndex, 0, movedScene);
-          
-          return { scenes: newScenes };
-        });
-
-        get().saveToHistory();
-      },
-
-      duplicateScene: (index) => {
-        const { scenes } = get();
-        const sceneToDuplicate = scenes[index];
-        
-        const duplicated = {
-          ...sceneToDuplicate,
-          id: generateId(),
-          title: `${sceneToDuplicate.title} (کپی)`,
-        };
-
-        set((state) => {
-          const newScenes = [...state.scenes];
-          newScenes.splice(index + 1, 0, duplicated);
-          
-          return {
-            scenes: newScenes,
-            totalDuration: state.totalDuration + duplicated.duration,
-          };
-        });
-
-        get().saveToHistory();
-      },
-
-      // ============================================
-      // صحنه فعلی
-      // ============================================
-      setCurrentScene: (index) => {
-        const { scenes } = get();
-        if (index >= 0 && index < scenes.length) {
-          set({ currentSceneIndex: index });
-        }
-      },
-
-      nextScene: () => {
-        const { currentSceneIndex, scenes } = get();
-        if (currentSceneIndex < scenes.length - 1) {
-          set({ currentSceneIndex: currentSceneIndex + 1 });
-        }
-      },
-
-      prevScene: () => {
-        const { currentSceneIndex } = get();
-        if (currentSceneIndex > 0) {
-          set({ currentSceneIndex: currentSceneIndex - 1 });
-        }
-      },
-
-      // ============================================
       // تنظیمات
-      // ============================================
-      updateSettings: (updates) => {
-        set((state) => ({
-          settings: { ...state.settings, ...updates },
-        }));
+      settings: {
+        // تنظیمات پایه
+        duration: 5,
+        speed: 1,
+        transition: 'fade',
         
-        get().saveToHistory();
-      },
-
-      resetSettings: () => {
-        set({ settings: { ...DEFAULT_SETTINGS } });
-        get().saveToHistory();
-      },
-
-      // ============================================
-      // کنترل پخش
-      // ============================================
-      play: () => {
-        set({ isPlaying: true, isPaused: false });
-      },
-
-      pause: () => {
-        set({ isPaused: true, isPlaying: false });
-      },
-
-      stop: () => {
-        set({ 
-          isPlaying: false, 
-          isPaused: false, 
-          currentSceneIndex: 0,
-          currentTime: 0,
-        });
-      },
-
-      togglePlayPause: () => {
-        const { isPlaying, isPaused } = get();
+        // تنظیمات متن
+        fontSize: 48,
+        textColor: '#ffffff',
+        textPosition: 'center',
+        textShadow: true,
         
-        if (isPlaying) {
-          get().pause();
-        } else if (isPaused) {
-          get().play();
-        } else {
-          get().play();
-        }
-      },
-
-      // ============================================
-      // ضبط
-      // ============================================
-      startRecording: () => {
-        set({ isRecording: true, isPlaying: true });
-      },
-
-      stopRecording: () => {
-        set({ isRecording: false, isPlaying: false });
-      },
-
-      // ============================================
-      // Timeline
-      // ============================================
-      setTimelineZoom: (zoom) => {
-        set({ timelineZoom: Math.max(0.5, Math.min(3, zoom)) });
-      },
-
-      zoomIn: () => {
-        const { timelineZoom } = get();
-        get().setTimelineZoom(timelineZoom + 0.25);
-      },
-
-      zoomOut: () => {
-        const { timelineZoom } = get();
-        get().setTimelineZoom(timelineZoom - 0.25);
-      },
-
-      setCurrentTime: (time) => {
-        const { totalDuration } = get();
-        set({ currentTime: Math.max(0, Math.min(time, totalDuration)) });
-      },
-
-      seekToScene: (index) => {
-        const { scenes } = get();
-        let time = 0;
+        // تنظیمات افکت
+        typewriter: false,
+        kenburns: false,
+        particles: false,
+        vignette: false,
+        glow: false,
+        grainy: false,
+        shake: false,
+        glitch: false,
+        chromatic: false,
         
-        for (let i = 0; i < index && i < scenes.length; i++) {
-          time += scenes[i].duration || 5;
-        }
+        // تنظیمات رنگ
+        brightness: 100,
+        contrast: 100,
+        saturation: 100,
         
-        set({ currentTime: time, currentSceneIndex: index });
+        // تنظیمات پس‌زمینه
+        bgOpacity: 100,
+        bgBlur: 0,
+        
+        // تنظیمات ویدیو
+        aspectRatio: '16:9',
+        quality: 'high',
+        fps: 30
       },
 
-      // ============================================
-      // History (Undo/Redo)
-      // ============================================
-      saveToHistory: () => {
-        const { scenes, settings, history, historyIndex, maxHistory } = get();
-        
-        const snapshot = {
-          scenes: JSON.parse(JSON.stringify(scenes)),
-          settings: JSON.parse(JSON.stringify(settings)),
-          timestamp: Date.now(),
+      // ✅ تابع setScenes - اصلاح شده
+      setScenes: (scenes) => set({ scenes }),
+
+      // ✅ تابع addScene
+      addScene: (scene) => set((state) => ({
+        scenes: [...state.scenes, {
+          id: scene.id || `scene-${Date.now()}`,
+          order: state.scenes.length,
+          title: scene.title || `صحنه ${state.scenes.length + 1}`,
+          content: scene.content || '',
+          duration: scene.duration || state.settings.duration,
+          ...scene
+        }]
+      })),
+
+      // ✅ تابع updateScene
+      updateScene: (sceneId, updates) => set((state) => ({
+        scenes: state.scenes.map(scene =>
+          scene.id === sceneId ? { ...scene, ...updates } : scene
+        )
+      })),
+
+      // ✅ تابع deleteScene
+      deleteScene: (sceneId) => set((state) => ({
+        scenes: state.scenes
+          .filter(scene => scene.id !== sceneId)
+          .map((scene, index) => ({ ...scene, order: index }))
+      })),
+
+      // ✅ تابع duplicateScene
+      duplicateScene: (sceneId) => set((state) => {
+        const sceneToDuplicate = state.scenes.find(s => s.id === sceneId);
+        if (!sceneToDuplicate) return state;
+
+        const newScene = {
+          ...sceneToDuplicate,
+          id: `scene-${Date.now()}`,
+          order: state.scenes.length,
+          title: `${sceneToDuplicate.title} (کپی)`
         };
 
-        // حذف history های بعد از index فعلی
-        const newHistory = history.slice(0, historyIndex + 1);
-        newHistory.push(snapshot);
+        return { scenes: [...state.scenes, newScene] };
+      }),
 
-        // محدود کردن history
-        if (newHistory.length > maxHistory) {
-          newHistory.shift();
+      // ✅ تابع reorderScenes
+      reorderScenes: (newScenes) => set({
+        scenes: newScenes.map((scene, index) => ({ ...scene, order: index }))
+      }),
+
+      // ✅ تنظیم صحنه فعلی
+      setCurrentSceneIndex: (index) => set({ currentSceneIndex: index }),
+
+      // ✅ تنظیم وضعیت پخش
+      setIsPlaying: (isPlaying) => set({ isPlaying }),
+
+      // ✅ تنظیم تنظیمات
+      updateSettings: (updates) => set((state) => ({
+        settings: { ...state.settings, ...updates }
+      })),
+
+      // ✅ ریست کردن همه چیز
+      reset: () => set({
+        scenes: [],
+        currentSceneIndex: 0,
+        isPlaying: false,
+        settings: {
+          duration: 5,
+          speed: 1,
+          transition: 'fade',
+          fontSize: 48,
+          textColor: '#ffffff',
+          textPosition: 'center',
+          textShadow: true,
+          typewriter: false,
+          kenburns: false,
+          particles: false,
+          vignette: false,
+          glow: false,
+          grainy: false,
+          shake: false,
+          glitch: false,
+          chromatic: false,
+          brightness: 100,
+          contrast: 100,
+          saturation: 100,
+          bgOpacity: 100,
+          bgBlur: 0,
+          aspectRatio: '16:9',
+          quality: 'high',
+          fps: 30
         }
+      }),
 
-        set({
-          history: newHistory,
-          historyIndex: newHistory.length - 1,
-        });
-      },
+      // ✅ بارگذاری پروژه
+      loadProject: (projectData) => set({
+        scenes: projectData.scenes || [],
+        settings: { ...get().settings, ...projectData.settings },
+        currentSceneIndex: 0,
+        isPlaying: false
+      }),
 
-      undo: () => {
-        const { history, historyIndex } = get();
-        
-        if (historyIndex > 0) {
-          const snapshot = history[historyIndex - 1];
-          set({
-            scenes: JSON.parse(JSON.stringify(snapshot.scenes)),
-            settings: JSON.parse(JSON.stringify(snapshot.settings)),
-            historyIndex: historyIndex - 1,
-          });
-        }
-      },
-
-      redo: () => {
-        const { history, historyIndex } = get();
-        
-        if (historyIndex < history.length - 1) {
-          const snapshot = history[historyIndex + 1];
-          set({
-            scenes: JSON.parse(JSON.stringify(snapshot.scenes)),
-            settings: JSON.parse(JSON.stringify(snapshot.settings)),
-            historyIndex: historyIndex + 1,
-          });
-        }
-      },
-
-      canUndo: () => {
-        const { historyIndex } = get();
-        return historyIndex > 0;
-      },
-
-      canRedo: () => {
-        const { history, historyIndex } = get();
-        return historyIndex < history.length - 1;
-      },
-
-      // ============================================
-      // UI State
-      // ============================================
-      setActiveTab: (tab) => {
-        set({ activeTab: tab });
-      },
-
-      toggleSidebar: () => {
-        set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed }));
-      },
-
-      toggleTimeline: () => {
-        set((state) => ({ timelineCollapsed: !state.timelineCollapsed }));
-      },
-
-      // ============================================
-      // قالب‌ها
-      // ============================================
-      loadTemplate: (template) => {
-        set({
-          text: template.text || '',
-          scenes: template.scenes || [],
-          settings: { ...DEFAULT_SETTINGS, ...template.settings },
-        });
-        
-        get().parseText();
-        get().saveToHistory();
-      },
-
-      // ============================================
-      // آمار
-      // ============================================
-      getStats: () => {
-        const { scenes, text } = get();
-        
-        return {
-          sceneCount: scenes.length,
-          totalDuration: scenes.reduce((sum, s) => sum + (s.duration || 5), 0),
-          wordCount: text.trim() ? text.trim().split(/\s+/).length : 0,
-          charCount: text.length,
-        };
-      },
-
-      // ============================================
-      // Export State
-      // ============================================
-      exportState: () => {
-        const { scenes, text, settings } = get();
-        return {
-          scenes: JSON.parse(JSON.stringify(scenes)),
-          text,
-          settings: JSON.parse(JSON.stringify(settings)),
-        };
-      },
-
-      importState: (state) => {
-        set({
-          scenes: state.scenes || [],
-          text: state.text || '',
-          settings: { ...DEFAULT_SETTINGS, ...state.settings },
-        });
-        
-        get().saveToHistory();
-      },
-
-      // ============================================
-      // ریست
-      // ============================================
-      resetEditor: () => {
-        set({
-          scenes: [],
-          currentSceneIndex: 0,
-          text: '',
-          settings: { ...DEFAULT_SETTINGS },
-          isPlaying: false,
-          isPaused: false,
-          isRecording: false,
-          timelineZoom: 1,
-          currentTime: 0,
-          totalDuration: 0,
-          history: [],
-          historyIndex: -1,
-        });
-      },
+      // ✅ دریافت داده‌های پروژه برای ذخیره
+      getProjectData: () => ({
+        scenes: get().scenes,
+        settings: get().settings
+      })
     }),
-    { name: 'EditorStore' }
+    {
+      name: 'editor-storage',
+      partialize: (state) => ({
+        settings: state.settings
+      })
+    }
   )
 );
 

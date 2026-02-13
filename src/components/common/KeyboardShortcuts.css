@@ -1,0 +1,264 @@
+/*
+ * مسیر: /video-maker-pro/src/components/common/KeyboardShortcuts.css
+ */
+
+/* ============================================
+   Toggle Button
+   ============================================ */
+.shortcuts-toggle-btn {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  z-index: 1000;
+}
+
+.shortcuts-toggle-btn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.shortcuts-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   Overlay
+   ============================================ */
+.shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+/* ============================================
+   Panel
+   ============================================ */
+.shortcuts-panel {
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .shortcuts-panel {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.shortcuts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: white;
+}
+
+.shortcuts-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* ============================================
+   List
+   ============================================ */
+.shortcuts-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .shortcut-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.shortcut-item:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateX(-4px);
+}
+
+.shortcut-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #334155;
+  box-shadow: 0 2px 0 #cbd5e1, inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+[data-theme="dark"] .shortcut-key {
+  background: linear-gradient(135deg, #334155, #1e293b);
+  border-color: #475569;
+  color: #e2e8f0;
+  box-shadow: 0 2px 0 #475569, inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.shortcut-description {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .shortcut-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.shortcuts-footer {
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+[data-theme="dark"] .shortcuts-footer {
+  background: rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.shortcuts-footer p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.shortcuts-footer kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 0.125rem 0.5rem;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .shortcuts-footer kbd {
+  background: linear-gradient(135deg, #334155, #1e293b);
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.shortcuts-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.shortcuts-list::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.shortcuts-list::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: var(--radius-full);
+}
+
+.shortcuts-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+  .shortcuts-toggle-btn {
+    bottom: 5rem;
+    right: 1rem;
+  }
+
+  .shortcuts-panel {
+    max-height: 90vh;
+  }
+
+  .shortcuts-list {
+    padding: 1rem;
+  }
+
+  .shortcut-key {
+    min-width: 60px;
+    font-size: 0.8125rem;
+  }
+
+  .shortcut-description {
+    font-size: 0.875rem;
+  }
+}

@@ -1,0 +1,672 @@
+/* 
+ * مسیر: /video-maker-pro/src/pages/Editor.css
+ */
+
+/* ============================================
+   Editor Page
+   ============================================ */
+.editor-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================
+   Loading State
+   ============================================ */
+.editor-loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(239, 68, 68, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.editor-header {
+  height: 64px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+[data-theme="dark"] .editor-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.header-center {
+  flex: 2;
+  justify-content: center;
+  min-width: 0;
+}
+
+.header-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* ============================================
+   Header Buttons
+   ============================================ */
+.editor-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.editor-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.editor-btn.icon-btn {
+  padding: 0.625rem;
+}
+
+.editor-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.back-btn {
+  background: var(--bg-secondary);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  color: white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  font-weight: 700;
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5);
+  transform: translateY(-2px);
+}
+
+.tutorial-btn {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: white;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.tutorial-btn:hover {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+}
+
+.tutorial-btn svg,
+.save-btn svg {
+  color: white;
+}
+
+/* ============================================
+   Project Info
+   ============================================ */
+.project-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.project-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+[data-theme="dark"] .project-name {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.save-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.saving {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--accent);
+}
+
+.saved {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #10b981;
+}
+
+.spinner-mini {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(251, 191, 36, 0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ============================================
+   Divider
+   ============================================ */
+.editor-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-color);
+  margin: 0 0.25rem;
+}
+
+[data-theme="dark"] .divider {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Editor Layout
+   ============================================ */
+.editor-layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================
+   Sidebar
+   ============================================ */
+.editor-sidebar {
+  width: 380px;
+  height: 100%;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  overflow-y: auto;
+  flex-shrink: 0;
+  order: 2;
+}
+
+[data-theme="dark"] .editor-sidebar {
+  background: rgba(255, 255, 255, 0.03);
+  border-left-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar */
+.editor-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.editor-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+}
+
+.editor-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   Main Content
+   ============================================ */
+.editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  order: 1;
+}
+
+/* ============================================
+   Viewport Wrapper
+   ============================================ */
+.viewport-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg-primary);
+  overflow: auto;
+  min-height: 0;
+}
+
+[data-theme="dark"] .viewport-wrapper {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* ============================================
+   Timeline Wrapper
+   ============================================ */
+.timeline-wrapper {
+  height: 220px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .timeline-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   Responsive - Desktop Large (> 1400px)
+   ============================================ */
+@media (min-width: 1401px) {
+  .viewport-wrapper {
+    padding: 2.5rem;
+  }
+}
+
+/* ============================================
+   Responsive - Desktop (1200px - 1400px)
+   ============================================ */
+@media (max-width: 1400px) {
+  .editor-sidebar {
+    width: 360px;
+  }
+
+  .viewport-wrapper {
+    padding: 1.75rem;
+  }
+}
+
+/* ============================================
+   Responsive - Laptop (992px - 1200px)
+   ============================================ */
+@media (max-width: 1200px) {
+  .editor-header {
+    padding: 0 1.25rem;
+  }
+
+  .editor-sidebar {
+    width: 320px;
+  }
+
+  .viewport-wrapper {
+    padding: 1.5rem;
+  }
+
+  .timeline-wrapper {
+    height: 200px;
+  }
+
+  .project-name {
+    font-size: 0.9375rem;
+    max-width: 250px;
+  }
+}
+
+/* ============================================
+   Responsive - Tablet (768px - 992px)
+   ============================================ */
+@media (max-width: 992px) {
+  .editor-header {
+    height: 60px;
+    padding: 0 1rem;
+  }
+
+  .header-section {
+    gap: 0.5rem;
+  }
+
+  .editor-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .editor-btn.icon-btn {
+    padding: 0.5rem;
+  }
+
+  .project-name {
+    font-size: 0.875rem;
+    max-width: 200px;
+  }
+
+  .save-indicator {
+    font-size: 0.6875rem;
+  }
+
+  /* Sidebar overlay */
+  .editor-sidebar {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    bottom: 0;
+    width: 320px;
+    z-index: 1000;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .viewport-wrapper {
+    padding: 1.25rem;
+  }
+
+  .timeline-wrapper {
+    height: 180px;
+  }
+}
+
+/* ============================================
+   Responsive - Mobile Large (640px - 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  .editor-header {
+    height: 56px;
+    padding: 0 0.75rem;
+  }
+
+  .header-section {
+    gap: 0.375rem;
+  }
+
+  /* Hide button text, show only icons */
+  .editor-btn span {
+    display: none;
+  }
+
+  .editor-btn {
+    padding: 0.5rem;
+  }
+
+  /* Keep save button text */
+  .save-btn span {
+    display: inline;
+  }
+
+  .save-btn {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .divider {
+    margin: 0;
+  }
+
+  .project-name {
+    font-size: 0.875rem;
+    max-width: 150px;
+  }
+
+  .save-indicator {
+    font-size: 0.625rem;
+  }
+
+  /* Sidebar full width on mobile */
+  .editor-sidebar {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Viewport optimized for mobile */
+  .viewport-wrapper {
+    padding: 1rem;
+  }
+
+  .timeline-wrapper {
+    height: 160px;
+  }
+}
+
+/* ============================================
+   Responsive - Mobile (480px - 640px)
+   ============================================ */
+@media (max-width: 640px) {
+  .editor-header {
+    padding: 0 0.625rem;
+  }
+
+  .project-name {
+    font-size: 0.8125rem;
+    max-width: 120px;
+  }
+
+  .save-indicator {
+    font-size: 0.625rem;
+  }
+
+  .viewport-wrapper {
+    padding: 0.75rem;
+  }
+
+  .timeline-wrapper {
+    height: 150px;
+  }
+}
+
+/* ============================================
+   Responsive - Mobile Small (< 480px)
+   ============================================ */
+@media (max-width: 480px) {
+  .editor-header {
+    height: 52px;
+    padding: 0 0.5rem;
+  }
+
+  .header-section {
+    gap: 0.25rem;
+  }
+
+  .editor-btn {
+    padding: 0.375rem;
+  }
+
+  .editor-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .save-btn {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.75rem;
+  }
+
+  /* Hide center section on very small screens */
+  .header-center {
+    display: none;
+  }
+
+  .header-left {
+    flex: 1;
+  }
+
+  .spinner-mini {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Viewport takes maximum space */
+  .viewport-wrapper {
+    padding: 0.5rem;
+  }
+
+  .timeline-wrapper {
+    height: 140px;
+  }
+}
+
+/* ============================================
+   Landscape Mobile
+   ============================================ */
+@media (max-width: 768px) and (orientation: landscape) {
+  .editor-header {
+    height: 48px;
+    padding: 0 0.5rem;
+  }
+
+  .project-name {
+    font-size: 0.75rem;
+  }
+
+  .save-indicator {
+    display: none;
+  }
+
+  .viewport-wrapper {
+    padding: 0.5rem 1rem;
+  }
+
+  .timeline-wrapper {
+    height: 120px;
+  }
+
+  /* Sidebar overlay smaller in landscape */
+  .editor-sidebar {
+    width: 280px;
+  }
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  .editor-header,
+  .editor-sidebar,
+  .timeline-wrapper {
+    display: none !important;
+  }
+
+  .viewport-wrapper {
+    padding: 0;
+  }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .editor-btn,
+  .loading-spinner,
+  .spinner-mini {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Focus visible */
+.editor-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* High contrast */
+@media (prefers-contrast: high) {
+  .editor-header,
+  .editor-sidebar,
+  .timeline-wrapper {
+    border-width: 2px;
+  }
+
+  .editor-btn {
+    border-width: 2px;
+  }
+}
+
+/* ============================================
+   Dark Mode Enhancements
+   ============================================ */
+[data-theme="dark"] .save-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.5);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .save-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.7);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+[data-theme="dark"] .tutorial-btn {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
+}
+
+[data-theme="dark"] .tutorial-btn:hover {
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.7);
+}

@@ -1,368 +1,176 @@
-// ============================================
-// Project Store - مدیریت پروژه‌ها با Zustand
-// ============================================
+/*
+ * مسیر: /video-maker-pro/src/store/useProjectStore.js
+ */
 
 import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
-import storageService from '../services/storageService';
-import { DEFAULT_SETTINGS, PROJECT_STATUS } from '../utils/constants';
-import { generateId } from '../utils/helpers';
+import { persist } from 'zustand/middleware';
+
+// تمپلیت پیش‌فرض برای پروژه جدید
+const DEFAULT_SCENES = [
+  {
+    id: '1',
+    content: 'صحنه اول: شروع داستان\nتصویر: شهر در شب، نورهای رنگارنگ خیابان‌ها',
+    duration: 5,
+    order: 0
+  },
+  {
+    id: '2',
+    content: 'صحنه دوم: تنش و هیجان\nصدا: ضربان قلب تند و تندتر می‌شود',
+    duration: 5,
+    order: 1
+  },
+  {
+    id: '3',
+    content: 'صحنه سوم: اوج داستان\nتصویر: چوبینو سریع در کوچه‌های تاریک شهر',
+    duration: 5,
+    order: 2
+  },
+  {
+    id: '4',
+    content: 'صحنه چهارم: پایان\nآرامش دوباره به شهر بازمی‌گردد',
+    duration: 5,
+    order: 3
+  }
+];
+
+const DEFAULT_SETTINGS = {
+  speed: 1,
+  duration: 5,
+  transition: 'fade',
+  fontSize: 48,
+  textColor: '#ffffff',
+  textPosition: 'center',
+  textShadow: true,
+  typewriter: false,
+  glow: false,
+  kenburns: false,
+  particles: false,
+  vignette: false,
+  grainy: false,
+  shake: false,
+  glitch: false,
+  chromatic: false,
+  brightness: 100,
+  contrast: 100,
+  saturation: 100,
+  aspectRatio: '16:9',
+  bgOpacity: 100,
+  bgBlur: 0,
+  bgScale: 100,
+  bgFit: 'cover'
+};
 
 const useProjectStore = create(
-  devtools(
-    persist(
-      (set, get) => ({
-        // ============================================
-        // State
-        // ============================================
-        projects: [],
-        currentProject: null,
-        recentProjects: [],
-        isLoading: false,
-        error: null,
-        filter: {
-          search: '',
-          status: null,
-          sortBy: 'updatedAt',
-          sortOrder: 'desc',
-        },
+  persist(
+    (set, get) => ({
+      projects: [],
 
-        // ============================================
-        // بارگذاری پروژه‌ها
-        // ============================================
-        loadProjects: async () => {
-          set({ isLoading: true, error: null });
-          try {
-            const projects = await storageService.getAllProjects();
-            set({ projects, isLoading: false });
-          } catch (error) {
-            set({ 
-              error: 'خطا در بارگذاری پروژه‌ها', 
-              isLoading: false 
-            });
+      // بارگذاری پروژه‌ها
+      loadProjects: () => {
+        try {
+          const storedProjects = localStorage.getItem('video-maker-projects');
+          if (storedProjects) {
+            const projects = JSON.parse(storedProjects);
+            set({ projects });
+            console.log('✅ Projects loaded:', projects.length);
           }
-        },
+        } catch (error) {
+          console.error('❌ Error loading projects:', error);
+        }
+      },
 
-        // ============================================
-        // ساخت پروژه جدید
-        // ============================================
-        createProject: async (projectData) => {
-          set({ isLoading: true, error: null });
-          try {
-            const newProject = {
-              name: projectData.name || 'پروژه جدید',
-              description: projectData.description || '',
-              scenes: [],
-              settings: { ...DEFAULT_SETTINGS },
-              bgImage: null,
-              bgVideo: null,
-              audio: null,
-              status: PROJECT_STATUS.DRAFT,
-              ...projectData,
-            };
+      // ساخت پروژه جدید
+      createProject: async (name) => {
+        const newProject = {
+          id: Date.now().toString(),
+          name: name || 'پروژه جدید',
+          createdAt: Date.now(),
+          lastModified: Date.now(),
+          scenes: DEFAULT_SCENES,
+          settings: DEFAULT_SETTINGS,
+          thumbnail: null,
+          duration: DEFAULT_SCENES.reduce((acc, scene) => acc + (scene.duration || 5), 0)
+        };
 
-            const created = await storageService.createProject(newProject);
-            
-            set((state) => ({
-              projects: [created, ...state.projects],
-              currentProject: created,
-              isLoading: false,
-            }));
+        set(state => ({
+          projects: [newProject, ...state.projects]
+        }));
 
-            // اضافه به لیست اخیر
-            get().addToRecent(created.id);
+        // ذخیره در localStorage
+        const projects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
 
-            return created;
-          } catch (error) {
-            set({ 
-              error: 'خطا در ساخت پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
+        console.log('✅ Project created:', newProject.name, newProject.id);
+        return newProject;
+      },
 
-        // ============================================
-        // بارگذاری یک پروژه
-        // ============================================
-        loadProject: async (id) => {
-          set({ isLoading: true, error: null });
-          try {
-            const project = await storageService.getProject(id);
-            
-            if (!project) {
-              throw new Error('پروژه یافت نشد');
-            }
+      // به‌روزرسانی پروژه
+      updateProject: async (projectId, updates) => {
+        set(state => ({
+          projects: state.projects.map(project =>
+            project.id === projectId
+              ? {
+                  ...project,
+                  ...updates,
+                  lastModified: Date.now()
+                }
+              : project
+          )
+        }));
 
-            set({ currentProject: project, isLoading: false });
-            get().addToRecent(id);
-            
-            return project;
-          } catch (error) {
-            set({ 
-              error: 'خطا در بارگذاری پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
+        // ذخیره در localStorage
+        const projects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
 
-        // ============================================
-        // به‌روزرسانی پروژه
-        // ============================================
-        updateProject: async (id, updates) => {
-          set({ isLoading: true, error: null });
-          try {
-            const updated = await storageService.updateProject(id, updates);
-            
-            set((state) => ({
-              projects: state.projects.map((p) =>
-                p.id === id ? updated : p
-              ),
-              currentProject: state.currentProject?.id === id 
-                ? updated 
-                : state.currentProject,
-              isLoading: false,
-            }));
+        console.log('✅ Project updated:', projectId);
+      },
 
-            return updated;
-          } catch (error) {
-            set({ 
-              error: 'خطا در به‌روزرسانی پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
+      // حذف پروژه
+      deleteProject: async (projectId) => {
+        set(state => ({
+          projects: state.projects.filter(project => project.id !== projectId)
+        }));
 
-        // ============================================
-        // به‌روزرسانی پروژه فعلی
-        // ============================================
-        updateCurrentProject: async (updates) => {
-          const { currentProject } = get();
-          if (!currentProject) return null;
-          
-          return get().updateProject(currentProject.id, updates);
-        },
+        // ذخیره در localStorage
+        const projects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
 
-        // ============================================
-        // حذف پروژه
-        // ============================================
-        deleteProject: async (id) => {
-          set({ isLoading: true, error: null });
-          try {
-            await storageService.deleteProject(id);
-            
-            set((state) => ({
-              projects: state.projects.filter((p) => p.id !== id),
-              currentProject: state.currentProject?.id === id 
-                ? null 
-                : state.currentProject,
-              recentProjects: state.recentProjects.filter((pid) => pid !== id),
-              isLoading: false,
-            }));
+        console.log('✅ Project deleted:', projectId);
+      },
 
-            return true;
-          } catch (error) {
-            set({ 
-              error: 'خطا در حذف پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
+      // کپی پروژه
+      duplicateProject: async (projectId) => {
+        const originalProject = get().projects.find(p => p.id === projectId);
+        if (!originalProject) return null;
 
-        // ============================================
-        // کپی پروژه
-        // ============================================
-        duplicateProject: async (id) => {
-          set({ isLoading: true, error: null });
-          try {
-            const duplicated = await storageService.duplicateProject(id);
-            
-            set((state) => ({
-              projects: [duplicated, ...state.projects],
-              isLoading: false,
-            }));
+        const duplicatedProject = {
+          ...originalProject,
+          id: Date.now().toString(),
+          name: `${originalProject.name} (کپی)`,
+          createdAt: Date.now(),
+          lastModified: Date.now()
+        };
 
-            return duplicated;
-          } catch (error) {
-            set({ 
-              error: 'خطا در کپی پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
+        set(state => ({
+          projects: [duplicatedProject, ...state.projects]
+        }));
 
-        // ============================================
-        // جستجو
-        // ============================================
-        searchProjects: async (query) => {
-          set({ isLoading: true, error: null });
-          try {
-            const results = await storageService.searchProjects(query);
-            set({ isLoading: false });
-            return results;
-          } catch (error) {
-            set({ 
-              error: 'خطا در جستجو', 
-              isLoading: false 
-            });
-            return [];
-          }
-        },
+        // ذخیره در localStorage
+        const projects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
 
-        // ============================================
-        // فیلتر
-        // ============================================
-        setFilter: (filterUpdates) => {
-          set((state) => ({
-            filter: { ...state.filter, ...filterUpdates },
-          }));
-        },
+        console.log('✅ Project duplicated:', duplicatedProject.name);
+        return duplicatedProject;
+      },
 
-        getFilteredProjects: () => {
-          const { projects, filter } = get();
-          let filtered = [...projects];
-
-          // جستجو
-          if (filter.search) {
-            const query = filter.search.toLowerCase();
-            filtered = filtered.filter(
-              (p) =>
-                p.name?.toLowerCase().includes(query) ||
-                p.description?.toLowerCase().includes(query)
-            );
-          }
-
-          // فیلتر وضعیت
-          if (filter.status) {
-            filtered = filtered.filter((p) => p.status === filter.status);
-          }
-
-          // مرتب‌سازی
-          filtered.sort((a, b) => {
-            const aVal = a[filter.sortBy];
-            const bVal = b[filter.sortBy];
-            
-            if (filter.sortOrder === 'asc') {
-              return aVal > bVal ? 1 : -1;
-            } else {
-              return aVal < bVal ? 1 : -1;
-            }
-          });
-
-          return filtered;
-        },
-
-        // ============================================
-        // پروژه‌های اخیر
-        // ============================================
-        addToRecent: (projectId) => {
-          set((state) => {
-            const recent = [
-              projectId,
-              ...state.recentProjects.filter((id) => id !== projectId),
-            ].slice(0, 10); // فقط 10 تا نگه می‌داریم
-
-            return { recentProjects: recent };
-          });
-        },
-
-        getRecentProjects: () => {
-          const { projects, recentProjects } = get();
-          return recentProjects
-            .map((id) => projects.find((p) => p.id === id))
-            .filter(Boolean);
-        },
-
-        // ============================================
-        // Export / Import
-        // ============================================
-        exportProject: async (id) => {
-          try {
-            return await storageService.exportProject(id);
-          } catch (error) {
-            set({ error: 'خطا در صادر کردن پروژه' });
-            throw error;
-          }
-        },
-
-        importProject: async (jsonData) => {
-          set({ isLoading: true, error: null });
-          try {
-            const imported = await storageService.importProject(jsonData);
-            
-            set((state) => ({
-              projects: [imported, ...state.projects],
-              isLoading: false,
-            }));
-
-            return imported;
-          } catch (error) {
-            set({ 
-              error: 'خطا در وارد کردن پروژه', 
-              isLoading: false 
-            });
-            throw error;
-          }
-        },
-
-        exportAllProjects: async () => {
-          try {
-            return await storageService.exportAllProjects();
-          } catch (error) {
-            set({ error: 'خطا در صادر کردن پروژه‌ها' });
-            throw error;
-          }
-        },
-
-        // ============================================
-        // آمار
-        // ============================================
-        getStats: () => {
-          const { projects } = get();
-          
-          return {
-            total: projects.length,
-            draft: projects.filter((p) => p.status === PROJECT_STATUS.DRAFT).length,
-            inProgress: projects.filter((p) => p.status === PROJECT_STATUS.IN_PROGRESS).length,
-            completed: projects.filter((p) => p.status === PROJECT_STATUS.COMPLETED).length,
-            archived: projects.filter((p) => p.status === PROJECT_STATUS.ARCHIVED).length,
-          };
-        },
-
-        // ============================================
-        // ریست
-        // ============================================
-        resetCurrentProject: () => {
-          set({ currentProject: null });
-        },
-
-        clearError: () => {
-          set({ error: null });
-        },
-
-        resetStore: () => {
-          set({
-            projects: [],
-            currentProject: null,
-            recentProjects: [],
-            isLoading: false,
-            error: null,
-          });
-        },
-      }),
-      {
-        name: 'project-storage',
-        partialize: (state) => ({
-          recentProjects: state.recentProjects,
-          filter: state.filter,
-        }),
+      // گرفتن یک پروژه
+      getProject: (projectId) => {
+        return get().projects.find(p => p.id === projectId);
       }
-    ),
-    { name: 'ProjectStore' }
+    }),
+    {
+      name: 'video-maker-projects-storage'
+    }
   )
 );
 

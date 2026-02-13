@@ -1,463 +1,115 @@
-// ============================================
-// Media Store - مدیریت فایل‌های مدیا
-// ============================================
+/* 
+ * مسیر: /video-maker-pro/src/store/useMediaStore.js
+ */
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import storageService from '../services/storageService';
-import { 
-  fileToBase64, 
-  validateFile, 
-  getFileType, 
-  generateId 
-} from '../utils/helpers';
-import { MEDIA_TYPES } from '../utils/constants';
+import { persist } from 'zustand/middleware';
 
 const useMediaStore = create(
-  devtools(
+  persist(
     (set, get) => ({
-      // ============================================
-      // State
-      // ============================================
-      bgImage: null,
-      bgVideo: null,
-      audio: null,
-      bgType: null,
-      
-      // لیست فایل‌های آپلود شده
-      uploadedMedia: [],
-      
-      // وضعیت آپلود
-      isUploading: false,
-      uploadProgress: 0,
-      
-      // تنظیمات پس‌زمینه
-      bgSettings: {
-        opacity: 50,
-        blur: 10,
-      },
-      
-      // تنظیمات صدا
-      audioSettings: {
-        volume: 100,
-        loop: true,
-        fadeIn: false,
-        fadeOut: false,
-      },
-      
-      // Audio Player State
-      audioPlaying: false,
-      audioCurrentTime: 0,
-      audioDuration: 0,
-      
-      error: null,
+      // مدیا
+      backgroundMedia: null,
+      audioTrack: null,
+      uploadedImages: [],
+      uploadedVideos: [],
+      uploadedAudios: [],
 
-      // ============================================
-      // آپلود تصویر پس‌زمینه
-      // ============================================
-      uploadBackgroundImage: async (file) => {
-        set({ isUploading: true, error: null, uploadProgress: 0 });
-        
-        try {
-          // اعتبارسنجی
-          const validation = validateFile(file, MEDIA_TYPES.IMAGE);
-          if (!validation.valid) {
-            throw new Error(validation.error);
-          }
+      // ✅ تنظیم پس‌زمینه (عکس یا ویدیو)
+      setBackgroundMedia: (media) => set({ backgroundMedia: media }),
 
-          // تبدیل به Base64
-          set({ uploadProgress: 30 });
-          const base64 = await fileToBase64(file);
-          
-          set({ uploadProgress: 70 });
+      // ✅ اضافه کردن پس‌زمینه (عکس یا ویدیو)
+      addBackgroundMedia: (media) => set({ backgroundMedia: media }),
 
-          const media = {
-            id: generateId(),
-            type: MEDIA_TYPES.IMAGE,
-            name: file.name,
-            size: file.size,
-            data: base64,
-            uploadedAt: Date.now(),
-          };
+      // ✅ حذف پس‌زمینه
+      removeBackgroundMedia: () => set({ backgroundMedia: null }),
 
-          set({
-            bgImage: media,
-            bgType: MEDIA_TYPES.IMAGE,
-            bgVideo: null,
-            uploadProgress: 100,
-            isUploading: false,
-          });
+      // ✅ تنظیم موسیقی
+      setAudioTrack: (audio) => set({ audioTrack: audio }),
 
-          // اضافه به لیست آپلود شده‌ها
-          get().addToUploadedMedia(media);
+      // ✅ اضافه کردن موسیقی
+      addAudioTrack: (audio) => set({ audioTrack: audio }),
 
-          return media;
-        } catch (error) {
-          set({ 
-            error: error.message, 
-            isUploading: false,
-            uploadProgress: 0,
-          });
-          throw error;
-        }
-      },
+      // ✅ حذف موسیقی
+      removeAudioTrack: () => set({ audioTrack: null }),
 
-      // ============================================
-      // آپلود ویدیو پس‌زمینه
-      // ============================================
-      uploadBackgroundVideo: async (file) => {
-        set({ isUploading: true, error: null, uploadProgress: 0 });
-        
-        try {
-          const validation = validateFile(file, MEDIA_TYPES.VIDEO);
-          if (!validation.valid) {
-            throw new Error(validation.error);
-          }
+      // ✅ اضافه کردن عکس به لیست
+      addImage: (image) => set((state) => ({
+        uploadedImages: [...state.uploadedImages, image]
+      })),
 
-          set({ uploadProgress: 30 });
-          const base64 = await fileToBase64(file);
-          
-          set({ uploadProgress: 70 });
+      // ✅ اضافه کردن ویدیو به لیست
+      addVideo: (video) => set((state) => ({
+        uploadedVideos: [...state.uploadedVideos, video]
+      })),
 
-          const media = {
-            id: generateId(),
-            type: MEDIA_TYPES.VIDEO,
-            name: file.name,
-            size: file.size,
-            data: base64,
-            uploadedAt: Date.now(),
-          };
+      // ✅ اضافه کردن موسیقی به لیست
+      addAudio: (audio) => set((state) => ({
+        uploadedAudios: [...state.uploadedAudios, audio]
+      })),
 
-          set({
-            bgVideo: media,
-            bgType: MEDIA_TYPES.VIDEO,
-            bgImage: null,
-            uploadProgress: 100,
-            isUploading: false,
-          });
+      // ✅ حذف عکس
+      removeImage: (id) => set((state) => ({
+        uploadedImages: state.uploadedImages.filter(img => img.id !== id)
+      })),
 
-          get().addToUploadedMedia(media);
+      // ✅ حذف ویدیو
+      removeVideo: (id) => set((state) => ({
+        uploadedVideos: state.uploadedVideos.filter(vid => vid.id !== id)
+      })),
 
-          return media;
-        } catch (error) {
-          set({ 
-            error: error.message, 
-            isUploading: false,
-            uploadProgress: 0,
-          });
-          throw error;
-        }
-      },
+      // ✅ حذف موسیقی
+      removeAudio: (id) => set((state) => ({
+        uploadedAudios: state.uploadedAudios.filter(aud => aud.id !== id)
+      })),
 
-      // ============================================
-      // آپلود فایل صوتی
-      // ============================================
-      uploadAudio: async (file) => {
-        set({ isUploading: true, error: null, uploadProgress: 0 });
-        
-        try {
-          const validation = validateFile(file, MEDIA_TYPES.AUDIO);
-          if (!validation.valid) {
-            throw new Error(validation.error);
-          }
+      // ✅ پاک کردن همه مدیا
+      clearAllMedia: () => set({
+        backgroundMedia: null,
+        audioTrack: null,
+        uploadedImages: [],
+        uploadedVideos: [],
+        uploadedAudios: []
+      }),
 
-          set({ uploadProgress: 30 });
-          const base64 = await fileToBase64(file);
-          
-          set({ uploadProgress: 70 });
-
-          const media = {
-            id: generateId(),
-            type: MEDIA_TYPES.AUDIO,
-            name: file.name,
-            size: file.size,
-            data: base64,
-            uploadedAt: Date.now(),
-          };
-
-          set({
-            audio: media,
-            uploadProgress: 100,
-            isUploading: false,
-          });
-
-          get().addToUploadedMedia(media);
-
-          return media;
-        } catch (error) {
-          set({ 
-            error: error.message, 
-            isUploading: false,
-            uploadProgress: 0,
-          });
-          throw error;
-        }
-      },
-
-      // ============================================
-      // حذف پس‌زمینه
-      // ============================================
-      removeBackground: () => {
-        set({
-          bgImage: null,
-          bgVideo: null,
-          bgType: null,
-        });
-      },
-
-      // ============================================
-      // حذف صدا
-      // ============================================
-      removeAudio: () => {
-        set({
-          audio: null,
-          audioPlaying: false,
-          audioCurrentTime: 0,
-          audioDuration: 0,
-        });
-      },
-
-      // ============================================
-      // تنظیمات پس‌زمینه
-      // ============================================
-      updateBgSettings: (updates) => {
-        set((state) => ({
-          bgSettings: { ...state.bgSettings, ...updates },
-        }));
-      },
-
-      setBgOpacity: (opacity) => {
-        set((state) => ({
-          bgSettings: { ...state.bgSettings, opacity },
-        }));
-      },
-
-      setBgBlur: (blur) => {
-        set((state) => ({
-          bgSettings: { ...state.bgSettings, blur },
-        }));
-      },
-
-      // ============================================
-      // تنظیمات صدا
-      // ============================================
-      updateAudioSettings: (updates) => {
-        set((state) => ({
-          audioSettings: { ...state.audioSettings, ...updates },
-        }));
-      },
-
-      setVolume: (volume) => {
-        set((state) => ({
-          audioSettings: { ...state.audioSettings, volume },
-        }));
-      },
-
-      toggleLoop: () => {
-        set((state) => ({
-          audioSettings: {
-            ...state.audioSettings,
-            loop: !state.audioSettings.loop,
-          },
-        }));
-      },
-
-      // ============================================
-      // کنترل Audio Player
-      // ============================================
-      toggleAudioPlayback: () => {
-        set((state) => ({
-          audioPlaying: !state.audioPlaying,
-        }));
-      },
-
-      setAudioPlaying: (playing) => {
-        set({ audioPlaying: playing });
-      },
-
-      setAudioCurrentTime: (time) => {
-        set({ audioCurrentTime: time });
-      },
-
-      setAudioDuration: (duration) => {
-        set({ audioDuration: duration });
-      },
-
-      seekAudio: (time) => {
-        const { audioDuration } = get();
-        set({ 
-          audioCurrentTime: Math.max(0, Math.min(time, audioDuration)) 
-        });
-      },
-
-      // ============================================
-      // مدیریت فایل‌های آپلود شده
-      // ============================================
-      addToUploadedMedia: (media) => {
-        set((state) => ({
-          uploadedMedia: [media, ...state.uploadedMedia],
-        }));
-      },
-
-      removeFromUploadedMedia: (id) => {
-        set((state) => ({
-          uploadedMedia: state.uploadedMedia.filter((m) => m.id !== id),
-        }));
-      },
-
-      clearUploadedMedia: () => {
-        set({ uploadedMedia: [] });
-      },
-
-      // ============================================
-      // استفاده از فایل آپلود شده
-      // ============================================
-      useUploadedMedia: (mediaId) => {
-        const { uploadedMedia } = get();
-        const media = uploadedMedia.find((m) => m.id === mediaId);
-        
-        if (!media) return;
-
-        switch (media.type) {
-          case MEDIA_TYPES.IMAGE:
-            set({
-              bgImage: media,
-              bgType: MEDIA_TYPES.IMAGE,
-              bgVideo: null,
-            });
-            break;
-          case MEDIA_TYPES.VIDEO:
-            set({
-              bgVideo: media,
-              bgType: MEDIA_TYPES.VIDEO,
-              bgImage: null,
-            });
-            break;
-          case MEDIA_TYPES.AUDIO:
-            set({ audio: media });
-            break;
-          default:
-            break;
-        }
-      },
-
-      // ============================================
-      // ذخیره و بارگذاری از پروژه
-      // ============================================
-      saveMediaToProject: async (projectId) => {
-        const { bgImage, bgVideo, audio, bgSettings, audioSettings } = get();
-        
-        const mediaData = {
-          bgImage,
-          bgVideo,
-          audio,
-          bgSettings,
-          audioSettings,
-        };
-
-        // اینجا می‌تونیم با storageService ذخیره کنیم
-        return mediaData;
-      },
-
-      loadMediaFromProject: (mediaData) => {
-        if (!mediaData) return;
-
-        set({
-          bgImage: mediaData.bgImage || null,
-          bgVideo: mediaData.bgVideo || null,
-          audio: mediaData.audio || null,
-          bgType: mediaData.bgImage 
-            ? MEDIA_TYPES.IMAGE 
-            : mediaData.bgVideo 
-            ? MEDIA_TYPES.VIDEO 
-            : null,
-          bgSettings: mediaData.bgSettings || {
-            opacity: 50,
-            blur: 10,
-          },
-          audioSettings: mediaData.audioSettings || {
-            volume: 100,
-            loop: true,
-            fadeIn: false,
-            fadeOut: false,
-          },
-        });
-      },
-
-      // ============================================
-      // آمار
-      // ============================================
-      getMediaStats: () => {
-        const { bgImage, bgVideo, audio, uploadedMedia } = get();
-        
+      // ✅ دریافت حجم کل فایل‌ها
+      getTotalSize: () => {
+        const state = get();
         let totalSize = 0;
-        if (bgImage) totalSize += bgImage.size;
-        if (bgVideo) totalSize += bgVideo.size;
-        if (audio) totalSize += audio.size;
 
-        return {
-          hasBackground: !!(bgImage || bgVideo),
-          hasAudio: !!audio,
-          totalFiles: uploadedMedia.length,
-          totalSize,
-        };
-      },
+        if (state.backgroundMedia?.size) {
+          totalSize += state.backgroundMedia.size;
+        }
 
-      // ============================================
-      // Export State
-      // ============================================
-      exportMediaState: () => {
-        const { 
-          bgImage, 
-          bgVideo, 
-          audio, 
-          bgSettings, 
-          audioSettings 
-        } = get();
-        
-        return {
-          bgImage,
-          bgVideo,
-          audio,
-          bgSettings,
-          audioSettings,
-        };
-      },
+        if (state.audioTrack?.size) {
+          totalSize += state.audioTrack.size;
+        }
 
-      // ============================================
-      // ریست
-      // ============================================
-      clearError: () => {
-        set({ error: null });
-      },
-
-      resetMedia: () => {
-        set({
-          bgImage: null,
-          bgVideo: null,
-          audio: null,
-          bgType: null,
-          uploadedMedia: [],
-          isUploading: false,
-          uploadProgress: 0,
-          bgSettings: {
-            opacity: 50,
-            blur: 10,
-          },
-          audioSettings: {
-            volume: 100,
-            loop: true,
-            fadeIn: false,
-            fadeOut: false,
-          },
-          audioPlaying: false,
-          audioCurrentTime: 0,
-          audioDuration: 0,
-          error: null,
+        state.uploadedImages.forEach(img => {
+          if (img.size) totalSize += img.size;
         });
-      },
+
+        state.uploadedVideos.forEach(vid => {
+          if (vid.size) totalSize += vid.size;
+        });
+
+        state.uploadedAudios.forEach(aud => {
+          if (aud.size) totalSize += aud.size;
+        });
+
+        return totalSize;
+      }
     }),
-    { name: 'MediaStore' }
+    {
+      name: 'media-storage',
+      partialize: (state) => ({
+        // فقط metadata ذخیره می‌شه، نه خود فایل‌ها
+        backgroundMedia: state.backgroundMedia ? {
+          type: state.backgroundMedia.type,
+          name: state.backgroundMedia.name
+        } : null
+      })
+    }
   )
 );
 
