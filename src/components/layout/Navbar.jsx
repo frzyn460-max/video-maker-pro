@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import './Navbar.css';
@@ -8,27 +8,41 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeHover, setActiveHover] = useState(null);
 
   const menuItems = [
     { label: 'خانه', href: '/', icon: '🏠' },
     { label: 'داشبورد', href: '/dashboard', icon: '📊' },
     { label: 'ویژگی‌ها', href: '#features', icon: '✨' },
-    { label: 'قالب‌ها', href: '#templates', icon: '🎨' },
-    { label: 'راهنما', href: '#help', icon: '❓' },
   ];
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      {/* خط درخشان بالای navbar */}
+      <div className="navbar-glow-line" />
+
       <div className="navbar-container">
+
         {/* Logo */}
         <div className="navbar-brand">
-          <div className="navbar-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <span className="navbar-logo-icon">🎬</span>
-            <span className="navbar-logo-text">Video Maker Pro</span>
+          <div className="navbar-logo" onClick={() => navigate('/')}>
+            <div className="navbar-logo-icon-wrap">
+              <span className="navbar-logo-icon">🎬</span>
+              <div className="navbar-logo-ring" />
+            </div>
+            <div className="navbar-logo-texts">
+              <span className="navbar-logo-text">Video Maker</span>
+              <span className="navbar-logo-badge">Pro</span>
+            </div>
           </div>
         </div>
 
@@ -46,9 +60,12 @@ const Navbar = () => {
                   }
                 }}
                 className={`navbar-link ${location.pathname === item.href ? 'active' : ''}`}
+                onMouseEnter={() => setActiveHover(index)}
+                onMouseLeave={() => setActiveHover(null)}
               >
                 <span className="navbar-link-icon">{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="navbar-link-label">{item.label}</span>
+                {activeHover === index && <span className="navbar-link-glow" />}
               </a>
             ))}
           </div>
@@ -58,48 +75,28 @@ const Navbar = () => {
         <div className="navbar-actions">
           {!isMobile && (
             <>
-              <button className="navbar-btn navbar-btn-outline">
-                ورود
+              <button className="navbar-btn navbar-btn-ghost">
+                <span>ورود</span>
               </button>
-              <button 
+              <button
                 className="navbar-btn navbar-btn-primary"
                 onClick={() => navigate('/dashboard')}
               >
-                شروع کنید
+                <span className="navbar-btn-text">شروع کنید</span>
+                <span className="navbar-btn-arrow">←</span>
               </button>
             </>
           )}
 
-          {/* Mobile Menu Toggle */}
           {isMobile && (
             <button
-              className="navbar-mobile-toggle"
+              className={`navbar-mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
               onClick={toggleMobileMenu}
               aria-label="منوی موبایل"
             >
-              {mobileMenuOpen ? (
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
+              <span className="toggle-bar bar-1" />
+              <span className="toggle-bar bar-2" />
+              <span className="toggle-bar bar-3" />
             </button>
           )}
         </div>
@@ -113,20 +110,23 @@ const Navbar = () => {
               <a
                 key={index}
                 href={item.href}
-                className="navbar-mobile-link"
+                className={`navbar-mobile-link ${location.pathname === item.href ? 'active' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
+                style={{ animationDelay: `${index * 0.06}s` }}
               >
                 <span className="navbar-mobile-link-icon">{item.icon}</span>
                 <span>{item.label}</span>
+                <span className="navbar-mobile-link-arrow">←</span>
               </a>
             ))}
-            
+
             <div className="navbar-mobile-actions">
-              <button className="navbar-btn navbar-btn-outline navbar-btn-fullwidth">
-                ورود
-              </button>
-              <button className="navbar-btn navbar-btn-primary navbar-btn-fullwidth">
-                شروع کنید
+              <button className="navbar-btn navbar-btn-ghost navbar-btn-fullwidth">ورود</button>
+              <button
+                className="navbar-btn navbar-btn-primary navbar-btn-fullwidth"
+                onClick={() => { navigate('/dashboard'); setMobileMenuOpen(false); }}
+              >
+                شروع کنید ←
               </button>
             </div>
           </div>

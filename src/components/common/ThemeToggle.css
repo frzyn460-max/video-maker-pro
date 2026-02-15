@@ -27,11 +27,19 @@
   transform: translateY(100px) scale(0.8);
 }
 
-/* حالت نمایش */
+/* حالت نمایش با اسکرول */
 .theme-toggle-btn.visible {
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);
+}
+
+/* حالت همیشه نمایان - بدون انیمیشن ورود */
+.theme-toggle-btn.always-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  animation: none !important;
 }
 
 /* Hover Effect */
@@ -120,9 +128,9 @@
 }
 
 /* ============================================
-   Pulse Animation (هنگام ظاهر شدن)
+   Pulse Animation (فقط برای حالت scroll‌دار)
    ============================================ */
-.theme-toggle-btn.visible {
+.theme-toggle-btn.visible:not(.always-visible) {
   animation: pulseIn 0.6s var(--easing);
 }
 
@@ -182,7 +190,8 @@
     transition: none !important;
   }
   
-  .theme-toggle-btn.visible {
+  .theme-toggle-btn.visible,
+  .theme-toggle-btn.always-visible {
     opacity: 1;
     transform: none;
   }

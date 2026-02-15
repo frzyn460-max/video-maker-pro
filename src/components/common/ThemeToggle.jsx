@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import './ThemeToggle.css';
 
-const ThemeToggle = ({ className = '' }) => {
+const ThemeToggle = ({ className = '', alwaysVisible = false }) => {
   const { theme, toggleTheme } = useTheme();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(alwaysVisible);
 
   useEffect(() => {
+    // اگه alwaysVisible باشه، نیازی به scroll listener نیست
+    if (alwaysVisible) {
+      setIsVisible(true);
+      return;
+    }
+
     const toggleVisibility = () => {
       // دکمه بعد از 100px اسکرول نمایان می‌شود
       if (window.pageYOffset > 100) {
@@ -23,12 +29,12 @@ const ThemeToggle = ({ className = '' }) => {
     return () => {
       window.removeEventListener('scroll', toggleVisibility);
     };
-  }, []);
+  }, [alwaysVisible]);
 
   return (
     <button
       onClick={toggleTheme}
-      className={`theme-toggle-btn ${isVisible ? 'visible' : ''} ${className}`}
+      className={`theme-toggle-btn ${isVisible ? 'visible' : ''} ${alwaysVisible ? 'always-visible' : ''} ${className}`}
       aria-label={theme === 'dark' ? 'تغییر به تم روشن' : 'تغییر به تم تاریک'}
       title={theme === 'dark' ? 'تغییر به تم روشن' : 'تغییر به تم تاریک'}
     >

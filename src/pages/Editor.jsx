@@ -155,8 +155,8 @@ const Editor = () => {
 
   return (
     <div className="editor-page">
-      {/* آیکون دارک/لایت - پایین چپ */}
-      <ThemeToggle position="bottom-left" />
+      {/* آیکون دارک/لایت - پایین چپ - همیشه نمایان */}
+      <ThemeToggle alwaysVisible />
 
       {/* Header */}
       <header className="editor-header">
