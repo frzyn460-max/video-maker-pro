@@ -1,12 +1,12 @@
 /* 
  * مسیر: /video-maker-pro/src/components/editor/sidebar/AITab.jsx
+ * ✨ نسخه جدید
  */
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import useEditorStore from '../../../store/useEditorStore';
 import useUIStore from '../../../store/useUIStore';
-import Button from '../../common/‌Button';
 import './AITab.css';
 
 const AITab = () => {
@@ -17,17 +17,33 @@ const AITab = () => {
   const showSuccess = useUIStore(state => state.showSuccess);
   const showError = useUIStore(state => state.showError);
 
+  const parseScenes = (text) => {
+    const sceneBlocks = text.split(/(?=صحنه)/);
+    return sceneBlocks
+      .map((block, index) => {
+        const lines = block.trim().split('\n').filter(l => l.trim());
+        if (lines.length === 0) return null;
+        const title = lines[0].replace(/صحنه.*?:/i, '').trim();
+        const content = lines.slice(1).join(' ').replace(/تصویر:|صدا:/gi, '').trim();
+        return {
+          id: `scene-${Date.now()}-${index}`,
+          order: index,
+          title: title || `صحنه ${index + 1}`,
+          content: content || '',
+          duration: 5
+        };
+      })
+      .filter(Boolean);
+  };
+
   // تولید صحنه با AI
   const handleGenerateScenes = async () => {
     if (!prompt.trim()) {
       showError('لطفاً درخواست خود را وارد کنید');
       return;
     }
-
     setIsGenerating(true);
-
     try {
-      // Note: در نسخه نهایی باید API Key واقعی استفاده شود
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -45,49 +61,16 @@ const AITab = () => {
         })
       });
 
-      if (!response.ok) {
-        throw new Error('خطا در ارتباط با سرور');
-      }
+      if (!response.ok) throw new Error('خطا در ارتباط با سرور');
 
       const data = await response.json();
-      
       if (data.content && Array.isArray(data.content)) {
-        const text = data.content
-          .map(item => item.type === 'text' ? item.text : '')
-          .join('\n')
-          .trim();
-
-        if (text) {
-          // پارس صحنه‌ها
-          const sceneBlocks = text.split(/(?=صحنه)/);
-          const parsedScenes = sceneBlocks
-            .map((block, index) => {
-              const lines = block.trim().split('\n').filter(l => l.trim());
-              if (lines.length === 0) return null;
-
-              const title = lines[0].replace(/صحنه.*?:/i, '').trim();
-              const content = lines
-                .slice(1)
-                .join(' ')
-                .replace(/تصویر:|صدا:/gi, '')
-                .trim();
-
-              return {
-                id: `scene-${Date.now()}-${index}`,
-                order: index,
-                title: title || `صحنه ${index + 1}`,
-                content: content || '',
-                duration: 5
-              };
-            })
-            .filter(Boolean);
-
-          setScenes(parsedScenes);
-          showSuccess('صحنه‌ها با موفقیت تولید شدند');
-          setPrompt('');
-        } else {
-          throw new Error('پاسخ خالی دریافت شد');
-        }
+        const text = data.content.map(item => item.type === 'text' ? item.text : '').join('\n').trim();
+        if (!text) throw new Error('پاسخ خالی دریافت شد');
+        const parsedScenes = parseScenes(text);
+        setScenes(parsedScenes);
+        showSuccess('صحنه‌ها با موفقیت تولید شدند');
+        setPrompt('');
       } else {
         throw new Error('فرمت پاسخ نامعتبر است');
       }
@@ -102,19 +85,10 @@ const AITab = () => {
   // بهینه‌سازی صحنه‌های موجود
   const handleOptimizeScenes = async () => {
     const scenes = useEditorStore.getState().scenes;
-    
-    if (scenes.length === 0) {
-      showError('صحنه‌ای برای بهینه‌سازی وجود ندارد');
-      return;
-    }
-
+    if (scenes.length === 0) { showError('صحنه‌ای برای بهینه‌سازی وجود ندارد'); return; }
     setIsGenerating(true);
-
     try {
-      const scenesText = scenes.map(scene => {
-        return `صحنه ${scene.order + 1}: ${scene.title}\n${scene.content}`;
-      }).join('\n\n');
-
+      const scenesText = scenes.map(s => `صحنه ${s.order + 1}: ${s.title}\n${s.content}`).join('\n\n');
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -132,53 +106,19 @@ const AITab = () => {
         })
       });
 
-      if (!response.ok) {
-        throw new Error('خطا در ارتباط با سرور');
-      }
-
+      if (!response.ok) throw new Error('خطا در ارتباط با سرور');
       const data = await response.json();
-      
       if (data.content && Array.isArray(data.content)) {
-        const text = data.content
-          .map(item => item.type === 'text' ? item.text : '')
-          .join('\n')
-          .trim();
-
-        if (text) {
-          // پارس صحنه‌های بهینه شده
-          const sceneBlocks = text.split(/(?=صحنه)/);
-          const parsedScenes = sceneBlocks
-            .map((block, index) => {
-              const lines = block.trim().split('\n').filter(l => l.trim());
-              if (lines.length === 0) return null;
-
-              const title = lines[0].replace(/صحنه.*?:/i, '').trim();
-              const content = lines
-                .slice(1)
-                .join(' ')
-                .replace(/تصویر:|صدا:/gi, '')
-                .trim();
-
-              return {
-                id: `scene-${Date.now()}-${index}`,
-                order: index,
-                title: title || `صحنه ${index + 1}`,
-                content: content || '',
-                duration: scenes[index]?.duration || 5
-              };
-            })
-            .filter(Boolean);
-
-          setScenes(parsedScenes);
-          showSuccess('صحنه‌ها بهینه‌سازی شدند');
-        } else {
-          throw new Error('پاسخ خالی دریافت شد');
-        }
-      } else {
-        throw new Error('فرمت پاسخ نامعتبر است');
+        const text = data.content.map(item => item.type === 'text' ? item.text : '').join('\n').trim();
+        if (!text) throw new Error('پاسخ خالی دریافت شد');
+        const parsedScenes = parseScenes(text).map((s, i) => ({
+          ...s,
+          duration: scenes[i]?.duration || 5
+        }));
+        setScenes(parsedScenes);
+        showSuccess('صحنه‌ها بهینه‌سازی شدند');
       }
     } catch (error) {
-      console.error('خطا در بهینه‌سازی:', error);
       showError('خطا: برای استفاده از AI باید API Key خود را در کد قرار دهید');
     } finally {
       setIsGenerating(false);
@@ -198,10 +138,11 @@ const AITab = () => {
       {/* توضیحات */}
       <motion.div
         className="ai-info"
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
       >
-        <p className="info-title">✨ AI می‌تواند:</p>
+        <p className="info-title">✦ AI می‌تواند</p>
         <ul className="info-list">
           <li>تولید صحنه‌های سینمایی حرفه‌ای</li>
           <li>پیشنهاد افکت‌های مناسب</li>
@@ -210,9 +151,9 @@ const AITab = () => {
         </ul>
       </motion.div>
 
-      {/* ورودی prompt */}
+      {/* Prompt */}
       <div className="prompt-container">
-        <label className="prompt-label">درخواست شما:</label>
+        <label className="prompt-label">درخواست شما</label>
         <textarea
           className="prompt-input"
           value={prompt}
@@ -223,14 +164,12 @@ const AITab = () => {
         />
       </div>
 
-      {/* دکمه‌های عملیات */}
+      {/* دکمه‌ها */}
       <div className="ai-actions">
-        <Button
-          variant="primary"
-          size="md"
+        <button
+          className="ai-generate-btn"
           onClick={handleGenerateScenes}
           disabled={isGenerating || !prompt.trim()}
-          className="action-btn"
         >
           {isGenerating ? (
             <>
@@ -239,40 +178,38 @@ const AITab = () => {
             </>
           ) : (
             <>
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
               </svg>
               <span>تولید صحنه جدید</span>
             </>
           )}
-        </Button>
+        </button>
 
-        <Button
-          variant="secondary"
-          size="md"
+        <button
+          className="ai-optimize-btn"
           onClick={handleOptimizeScenes}
           disabled={isGenerating}
-          className="action-btn"
         >
           {isGenerating ? (
             <>
-              <div className="spinner-small"></div>
+              <div className="spinner-small" style={{ borderColor: 'rgba(139,92,246,0.25)', borderTopColor: '#8b5cf6' }}></div>
               <span>در حال بهینه‌سازی...</span>
             </>
           ) : (
             <>
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span>بهینه‌سازی متن</span>
+              <span>بهینه‌سازی صحنه‌های موجود</span>
             </>
           )}
-        </Button>
+        </button>
       </div>
 
       {/* یادآوری */}
       <div className="ai-note">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <span>برای استفاده از AI باید API Key خود را در کد قرار دهید</span>

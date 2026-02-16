@@ -1,22 +1,20 @@
 /* 
  * مسیر: /video-maker-pro/src/components/editor/sidebar/EditorSidebar.css
+ * ✨ نسخه جدید - Studio Panel
  */
 
 /* ============================================
-   Editor Sidebar
+   Sidebar Container
    ============================================ */
 .editor-sidebar-container {
   height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
-  border-left: 1px solid var(--border-color);
 }
 
 [data-theme="dark"] .editor-sidebar-container {
-  background: rgba(15, 23, 42, 0.95);
-  border-left-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  background: rgba(10, 14, 26, 0.95);
 }
 
 /* ============================================
@@ -25,64 +23,125 @@
 .sidebar-tabs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-  padding: 1rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
+  gap: 0;
+  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
+  padding: 0;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* خط گلوی پایین تب‌ها */
+.sidebar-tabs::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(99, 102, 241, 0.3),
+    transparent
+  );
+  pointer-events: none;
 }
 
 [data-theme="dark"] .sidebar-tabs {
-  background: rgba(30, 41, 59, 0.5);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: rgba(8, 11, 22, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
+/* ── هر تب ── */
 .sidebar-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.75rem;
+  gap: 0.25rem;
+  padding: 0.875rem 0.5rem 0.75rem;
   background: transparent;
-  border: 2px solid transparent;
-  border-radius: var(--radius-lg);
-  color: var(--text-secondary);
-  font-size: 0.75rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: var(--text-tertiary);
+  font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  letter-spacing: 0.02em;
 }
 
 [data-theme="dark"] .sidebar-tab {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .sidebar-tab:hover {
-  background: var(--bg-hover);
+  background: rgba(99, 102, 241, 0.04);
   color: var(--text-primary);
-  transform: translateY(-2px);
 }
 
 [data-theme="dark"] .sidebar-tab:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.8);
 }
 
+/* ── تب فعال ── */
 .sidebar-tab.active {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(251, 191, 36, 0.1));
-  border-color: var(--primary);
   color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: linear-gradient(180deg,
+    rgba(99, 102, 241, 0.06) 0%,
+    transparent 100%
+  );
 }
 
 [data-theme="dark"] .sidebar-tab.active {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(251, 191, 36, 0.2));
-  border-color: var(--primary);
-  color: var(--primary);
+  color: #818cf8;
+  border-bottom-color: var(--primary);
+  background: linear-gradient(180deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    transparent 100%
+  );
 }
 
-.sidebar-tab svg {
-  width: 20px;
-  height: 20px;
+/* ── آیکون تب ── */
+.sidebar-tab svg,
+.tab-icon svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-tab:hover svg,
+.sidebar-tab:hover .tab-icon svg {
+  transform: translateY(-1px);
+}
+
+.sidebar-tab.active svg,
+.sidebar-tab.active .tab-icon svg {
+  filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5)) drop-shadow(0 0 10px rgba(139, 92, 246, 0.2));
+}
+
+/* برچسب تب */
+.tab-label {
+  transition: color 0.2s ease;
+}
+
+/* ── badge روی تب AI ── */
+.sidebar-tab[data-tab="ai"]::after {
+  content: 'AI';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 1px 4px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  font-size: 0.5rem;
+  font-weight: 800;
+  border-radius: 3px;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================
@@ -91,42 +150,77 @@
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden !important;
-  padding: 1.5rem;
+  overflow-x: hidden;
+  padding: 1.25rem;
   background: var(--bg-secondary);
   max-width: 100%;
+  position: relative;
 }
 
 [data-theme="dark"] .sidebar-content {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(10, 14, 26, 0.6);
 }
 
 /* Scrollbar */
 .sidebar-content::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
-
 .sidebar-content::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .sidebar-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-full);
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 99px;
 }
-
-[data-theme="dark"] .sidebar-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-}
-
 .sidebar-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(99, 102, 241, 0.35);
 }
 
-/* جلوگیری از overflow افقی در محتوا */
 .sidebar-content > * {
   max-width: 100%;
   overflow-x: hidden;
+}
+
+/* ── wrapper محتوای تب ── */
+.tab-content-wrapper {
+  max-width: 100%;
+}
+
+/* ============================================
+   Section Headers (داخل هر تب)
+   ============================================ */
+.section-header,
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.875rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+[data-theme="dark"] .section-header,
+[data-theme="dark"] .section-title {
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+
+/* خط رنگی کوچک کنار عنوان */
+.section-header::before,
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 /* ============================================
@@ -135,18 +229,17 @@
 @media (max-width: 768px) {
   .sidebar-tabs {
     grid-template-columns: repeat(4, 1fr);
-    padding: 0.75rem;
-    gap: 0.375rem;
   }
 
   .sidebar-tab {
-    padding: 0.5rem;
-    font-size: 0.6875rem;
+    padding: 0.75rem 0.25rem 0.625rem;
+    font-size: 0.625rem;
   }
 
-  .sidebar-tab svg {
-    width: 18px;
-    height: 18px;
+  .sidebar-tab svg,
+  .tab-icon svg {
+    width: 16px;
+    height: 16px;
   }
 
   .sidebar-content {
@@ -157,20 +250,16 @@
 }
 
 @media (max-width: 480px) {
-  .sidebar-tabs {
-    padding: 0.625rem;
-    gap: 0.25rem;
-  }
-
   .sidebar-tab {
-    padding: 0.375rem;
-    font-size: 0.625rem;
-    gap: 0.25rem;
+    padding: 0.625rem 0.25rem 0.5rem;
+    font-size: 0.5625rem;
+    gap: 0.2rem;
   }
 
-  .sidebar-tab svg {
-    width: 16px;
-    height: 16px;
+  .sidebar-tab svg,
+  .tab-icon svg {
+    width: 15px;
+    height: 15px;
   }
 
   .sidebar-content {
@@ -183,12 +272,14 @@
    Accessibility
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  .sidebar-tab {
+  .sidebar-tab,
+  .sidebar-tab svg,
+  .sidebar-tab .tab-icon svg {
     transition: none;
   }
 }
 
 .sidebar-tab:focus-visible {
   outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline-offset: -2px;
 }

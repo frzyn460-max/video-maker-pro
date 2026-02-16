@@ -1,157 +1,148 @@
 /* ============================================
-   واردات فونت فارسی
+   فونت فارسی
    ============================================ */
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap');
 
 /* ============================================
-   بازنشانی و تنظیمات پایه
+   Reset
    ============================================ */
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', 
-               Roboto, sans-serif;
-}
-
-*::before,
-*::after {
-  box-sizing: border-box;
+  font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ============================================
-   متغیرهای CSS - تم تاریک
+   تم تاریک — تم اصلی پروژه (indigo/violet/pink)
    ============================================ */
 [data-theme='dark'] {
-  /* رنگ‌های اصلی */
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-light: rgba(99, 102, 241, 0.1);
-  
-  --secondary: #8b5cf6;
-  --secondary-hover: #7c3aed;
-  
-  --accent: #ec4899;
-  --accent-hover: #db2777;
-  
+  /* ── رنگ‌های برند ── */
+  --primary:        #6366f1;   /* indigo-500  */
+  --primary-dark:   #4f46e5;   /* indigo-600  */
+  --primary-light:  rgba(99, 102, 241, 0.12);
+
+  --accent:         #8b5cf6;   /* violet-500  */
+  --accent-dark:    #7c3aed;   /* violet-600  */
+  --accent-light:   rgba(139, 92, 246, 0.12);
+
+  --secondary:      #ec4899;   /* pink-500    */
+  --secondary-dark: #db2777;
+
   --success: #10b981;
   --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  
-  /* پس‌زمینه */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-hover: #475569;
-  
-  /* متن */
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --text-muted: #64748b;
-  
-  /* حاشیه */
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-color-strong: rgba(255, 255, 255, 0.2);
-  
-  /* سایه */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-  
-  /* Glass Effect */
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --danger:  #ef4444;
+  --info:    #3b82f6;
+
+  /* ── پس‌زمینه (navy dark) ── */
+  --bg-primary:   #080b18;
+  --bg-secondary: #0f1629;
+  --bg-tertiary:  #1a2240;
+  --bg-hover:     #1e2a50;
+
+  /* ── متن ── */
+  --text-primary:   #f1f5f9;
+  --text-secondary: #a8b4d0;
+  --text-tertiary:  #5d6b8a;
+
+  /* ── حاشیه ── */
+  --border-color:        rgba(99, 102, 241, 0.14);
+  --border-color-strong: rgba(99, 102, 241, 0.32);
+
+  /* ── سایه ── */
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md:  0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg:  0 8px 40px rgba(0, 0, 0, 0.6);
+  --shadow-xl:  0 20px 60px rgba(0, 0, 0, 0.7);
+  --shadow-2xl: 0 30px 80px rgba(0, 0, 0, 0.8);
+
+  /* ── Glass ── */
+  --glass-bg:     rgba(15, 22, 41, 0.75);
+  --glass-border: rgba(99, 102, 241, 0.18);
 }
 
 /* ============================================
-   متغیرهای CSS - تم روشن
+   تم روشن
    ============================================ */
 [data-theme='light'] {
-  /* رنگ‌های اصلی */
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-light: rgba(99, 102, 241, 0.1);
-  
-  --secondary: #8b5cf6;
-  --secondary-hover: #7c3aed;
-  
-  --accent: #ec4899;
-  --accent-hover: #db2777;
-  
+  --primary:        #6366f1;
+  --primary-dark:   #4f46e5;
+  --primary-light:  rgba(99, 102, 241, 0.08);
+
+  --accent:         #8b5cf6;
+  --accent-dark:    #7c3aed;
+  --accent-light:   rgba(139, 92, 246, 0.08);
+
+  --secondary:      #ec4899;
+  --secondary-dark: #db2777;
+
   --success: #10b981;
   --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  
-  /* پس‌زمینه */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #e2e8f0;
-  --bg-hover: #cbd5e1;
-  
-  /* متن */
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-tertiary: #64748b;
-  --text-muted: #94a3b8;
-  
-  /* حاشیه */
-  --border-color: rgba(0, 0, 0, 0.1);
-  --border-color-strong: rgba(0, 0, 0, 0.2);
-  
-  /* سایه */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.2);
-  
-  /* Glass Effect */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.1);
+  --danger:  #ef4444;
+  --info:    #3b82f6;
+
+  /* ── پس‌زمینه ── */
+  --bg-primary:   #fafbff;
+  --bg-secondary: #f0f2ff;
+  --bg-tertiary:  #e4e7ff;
+  --bg-hover:     #d6daff;
+
+  /* ── متن ── */
+  --text-primary:   #1e1b4b;
+  --text-secondary: #4338ca;
+  --text-tertiary:  #6366f1;
+
+  /* ── حاشیه ── */
+  --border-color:        rgba(99, 102, 241, 0.14);
+  --border-color-strong: rgba(99, 102, 241, 0.32);
+
+  /* ── سایه ── */
+  --shadow-sm:  0 2px 8px rgba(99, 102, 241, 0.08);
+  --shadow-md:  0 4px 20px rgba(99, 102, 241, 0.12);
+  --shadow-lg:  0 8px 40px rgba(99, 102, 241, 0.16);
+  --shadow-xl:  0 20px 60px rgba(99, 102, 241, 0.2);
+  --shadow-2xl: 0 30px 80px rgba(99, 102, 241, 0.25);
+
+  /* ── Glass ── */
+  --glass-bg:     rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(99, 102, 241, 0.2);
 }
 
 /* ============================================
    متغیرهای اندازه
    ============================================ */
 :root {
-  /* فاصله‌گذاری */
-  --spacing-xs: 0.25rem;    /* 4px */
-  --spacing-sm: 0.5rem;     /* 8px */
-  --spacing-md: 1rem;       /* 16px */
-  --spacing-lg: 1.5rem;     /* 24px */
-  --spacing-xl: 2rem;       /* 32px */
-  --spacing-2xl: 3rem;      /* 48px */
-  --spacing-3xl: 4rem;      /* 64px */
-  
-  /* Border Radius */
-  --radius-sm: 0.5rem;      /* 8px */
-  --radius-md: 0.75rem;     /* 12px */
-  --radius-lg: 1rem;        /* 16px */
-  --radius-xl: 1.25rem;     /* 20px */
-  --radius-2xl: 1.5rem;     /* 24px */
+  --spacing-xs:  0.25rem;
+  --spacing-sm:  0.5rem;
+  --spacing-md:  1rem;
+  --spacing-lg:  1.5rem;
+  --spacing-xl:  2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  --radius-sm:   0.375rem;
+  --radius-md:   0.625rem;
+  --radius-lg:   0.875rem;
+  --radius-xl:   1.125rem;
+  --radius-2xl:  1.5rem;
   --radius-full: 9999px;
-  
-  /* Transitions */
-  --transition-fast: 150ms;
-  --transition-normal: 300ms;
-  --transition-slow: 500ms;
+
+  --transition-fast:   120ms;
+  --transition-normal: 280ms;
+  --transition-slow:   480ms;
   --easing: cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Z-Index */
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
+
+  --z-dropdown:       1000;
+  --z-sticky:         1020;
+  --z-fixed:          1030;
   --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
-  --z-tooltip: 1070;
+  --z-modal:          1050;
+  --z-popover:        1060;
+  --z-tooltip:        1070;
 }
 
 /* ============================================
-   تنظیمات پایه HTML و Body
+   HTML / Body
    ============================================ */
 html {
   font-size: 16px;
@@ -180,66 +171,48 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   color: var(--text-primary);
 }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
 
-h1 { font-size: 2.5rem; }    /* 40px */
-h2 { font-size: 2rem; }      /* 32px */
-h3 { font-size: 1.5rem; }    /* 24px */
-h4 { font-size: 1.25rem; }   /* 20px */
-h5 { font-size: 1.125rem; }  /* 18px */
-h6 { font-size: 1rem; }      /* 16px */
-
-p {
-  margin: 0 0 1rem;
-  color: var(--text-secondary);
-}
+p { margin: 0 0 1rem; color: var(--text-secondary); }
 
 a {
   color: var(--primary);
   text-decoration: none;
   transition: color var(--transition-fast) var(--easing);
 }
-
-a:hover {
-  color: var(--primary-hover);
-}
+a:hover { color: var(--primary-dark); }
 
 /* ============================================
-   Scrollbar سفارشی
+   Scrollbar
    ============================================ */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
+  background: rgba(99, 102, 241, 0.28);
   border-radius: var(--radius-full);
   border: 2px solid var(--bg-secondary);
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-hover);
-}
+::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.48); }
 
 /* ============================================
    Selection
    ============================================ */
 ::selection {
-  background: var(--primary-light);
+  background: rgba(99, 102, 241, 0.18);
   color: var(--primary);
 }
-
 ::-moz-selection {
-  background: var(--primary-light);
+  background: rgba(99, 102, 241, 0.18);
   color: var(--primary);
 }
 
 /* ============================================
-   Focus Visible
+   Focus
    ============================================ */
 :focus-visible {
   outline: 2px solid var(--primary);
@@ -247,10 +220,19 @@ a:hover {
 }
 
 /* ============================================
-   کلاس‌های کمکی
+   Gradient Text — مشترک همه صفحات
+   gradient: indigo → violet → pink (مثل دکمه شروع کنید)
    ============================================ */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 55%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-/* Glass Card */
+/* ============================================
+   Glass Card
+   ============================================ */
 .glass-card {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
@@ -259,14 +241,15 @@ a:hover {
   border-radius: var(--radius-lg);
   transition: all var(--transition-normal) var(--easing);
 }
-
 .glass-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: var(--border-color-strong);
 }
 
-/* Container */
+/* ============================================
+   Utility Classes
+   ============================================ */
 .container-custom {
   width: 100%;
   max-width: 1400px;
@@ -274,146 +257,42 @@ a:hover {
   padding: 0 var(--spacing-md);
 }
 
-/* Grid */
-.grid {
-  display: grid;
-  gap: var(--spacing-md);
-}
-
-.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
-.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-
-/* Flex */
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
+.flex           { display: flex; }
+.flex-col       { flex-direction: column; }
+.items-center   { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between{ justify-content: space-between; }
 .gap-xs { gap: var(--spacing-xs); }
 .gap-sm { gap: var(--spacing-sm); }
 .gap-md { gap: var(--spacing-md); }
 .gap-lg { gap: var(--spacing-lg); }
 .gap-xl { gap: var(--spacing-xl); }
 
-/* Text Alignment */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-center     { text-align: center; }
+.text-primary    { color: var(--text-primary); }
+.text-secondary  { color: var(--text-secondary); }
+.text-tertiary   { color: var(--text-tertiary); }
 
-/* Font Weights */
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
+.font-medium   { font-weight: 500; }
 .font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
-.font-black { font-weight: 900; }
+.font-bold     { font-weight: 700; }
+.font-black    { font-weight: 900; }
 
-/* Text Colors */
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-tertiary { color: var(--text-tertiary); }
-.text-muted { color: var(--text-muted); }
+.shadow-sm  { box-shadow: var(--shadow-sm); }
+.shadow-md  { box-shadow: var(--shadow-md); }
+.shadow-lg  { box-shadow: var(--shadow-lg); }
+.shadow-xl  { box-shadow: var(--shadow-xl); }
 
-/* Background Colors */
-.bg-primary { background-color: var(--bg-primary); }
-.bg-secondary { background-color: var(--bg-secondary); }
-.bg-tertiary { background-color: var(--bg-tertiary); }
-
-/* Gradients */
-.gradient-primary {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-}
-
-.gradient-accent {
-  background: linear-gradient(135deg, var(--accent), var(--primary));
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Shadows */
-.shadow-sm { box-shadow: var(--shadow-sm); }
-.shadow-md { box-shadow: var(--shadow-md); }
-.shadow-lg { box-shadow: var(--shadow-lg); }
-.shadow-xl { box-shadow: var(--shadow-xl); }
-
-/* Border Radius */
-.rounded-sm { border-radius: var(--radius-sm); }
-.rounded-md { border-radius: var(--radius-md); }
-.rounded-lg { border-radius: var(--radius-lg); }
-.rounded-xl { border-radius: var(--radius-xl); }
-.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-sm   { border-radius: var(--radius-sm); }
+.rounded-md   { border-radius: var(--radius-md); }
+.rounded-lg   { border-radius: var(--radius-lg); }
+.rounded-xl   { border-radius: var(--radius-xl); }
 .rounded-full { border-radius: var(--radius-full); }
 
-/* Transitions */
-.transition-all {
-  transition: all var(--transition-normal) var(--easing);
-}
+.transition-all { transition: all var(--transition-normal) var(--easing); }
 
-.transition-colors {
-  transition: background-color var(--transition-normal) var(--easing),
-              color var(--transition-normal) var(--easing),
-              border-color var(--transition-normal) var(--easing);
-}
-
-/* ============================================
-   Responsive
-   ============================================ */
-@media (max-width: 1200px) {
-  .container-custom {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
-  
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.5rem; }
-  
-  .grid-cols-2,
-  .grid-cols-3,
-  .grid-cols-4 {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  html {
-    font-size: 13px;
-  }
-}
-
-/* ============================================
-   کلاس‌های کمکی اضافی
-   ============================================ */
-.hidden { display: none !important; }
-.invisible { visibility: hidden; }
-.pointer { cursor: pointer; }
+.hidden      { display: none !important; }
+.pointer     { cursor: pointer; }
 .select-none { user-select: none; }
 .truncate {
   overflow: hidden;
@@ -422,65 +301,44 @@ a:hover {
 }
 
 /* ============================================
-   Loading Spinner
+   Spinner
    ============================================ */
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--border-color);
+  border: 3px solid var(--primary-light);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* ============================================
+   Skeleton
+   ============================================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    var(--bg-hover) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+@keyframes skeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* ============================================
-   انیمیشن‌های پایه
+   Responsive
    ============================================ */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
 }
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s var(--easing);
-}
-
-.animate-slide-in-right {
-  animation: slideInRight 0.6s var(--easing);
-}
-
-.animate-slide-in-left {
-  animation: slideInLeft 0.6s var(--easing);
-}
+@media (max-width: 480px) { html { font-size: 13px; } }

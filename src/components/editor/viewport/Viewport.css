@@ -1,5 +1,6 @@
 /* 
  * مسیر: /video-maker-pro/src/components/editor/viewport/Viewport.css
+ * ✨ نسخه جدید - Cinematic Viewport
  */
 
 /* ============================================
@@ -11,9 +12,22 @@
   max-height: 100%;
   background: #000;
   overflow: hidden;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2xl);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 0 60px rgba(99,102,241,0.1),
+    0 0 100px rgba(139,92,246,0.05);
   margin: 0 auto;
+  transition: box-shadow 0.3s ease;
+}
+
+.viewport:hover {
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 0 70px rgba(99,102,241,0.14),
+    0 0 120px rgba(139,92,246,0.07);
 }
 
 .viewport.fullscreen {
@@ -33,31 +47,45 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
+  min-height: 360px;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  padding: 2.5rem;
   text-align: center;
-  gap: 1rem;
+  gap: 0.875rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.viewport-empty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(99,102,241,0.06) 0%, transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(139,92,246,0.04) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .empty-icon {
-  font-size: 4rem;
-  opacity: 0.5;
+  font-size: 3.5rem;
+  opacity: 0.4;
 }
 
 .viewport-empty h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .viewport-empty p {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--text-secondary);
   margin: 0;
-  max-width: 300px;
+  max-width: 280px;
+  line-height: 1.6;
 }
 
 /* ============================================
@@ -124,7 +152,7 @@
 }
 
 /* ============================================
-   Letterbox (نوارهای سینمایی)
+   Letterbox
    ============================================ */
 .letterbox {
   position: absolute;
@@ -134,14 +162,8 @@
   background: #000;
   z-index: 10;
 }
-
-.letterbox-top {
-  top: 0;
-}
-
-.letterbox-bottom {
-  bottom: 0;
-}
+.letterbox-top { top: 0; }
+.letterbox-bottom { bottom: 0; }
 
 /* ============================================
    Viewport Stage
@@ -162,12 +184,12 @@
 }
 
 .scene-title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.25em;
+  margin-bottom: 1.25rem;
   color: var(--accent);
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .scene-text {
@@ -179,78 +201,44 @@
 /* ============================================
    Effects
    ============================================ */
-
-/* Shake Effect */
-.shake-effect {
-  animation: shake 0.5s infinite;
-}
-
+.shake-effect { animation: shake 0.5s infinite; }
 @keyframes shake {
   0%, 100% { transform: translate(0, 0); }
   10%, 30%, 50%, 70%, 90% { transform: translate(-2px, -2px); }
   20%, 40%, 60%, 80% { transform: translate(2px, 2px); }
 }
 
-/* Glitch Effect */
-.glitch-effect {
-  animation: glitch 1s infinite;
-}
-
+.glitch-effect { animation: glitch 1s infinite; }
 @keyframes glitch {
-  0%, 100% {
-    transform: translate(0);
-    filter: hue-rotate(0deg);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-    filter: hue-rotate(90deg);
-  }
-  40% {
-    transform: translate(2px, -2px);
-    filter: hue-rotate(180deg);
-  }
-  60% {
-    transform: translate(-2px, -2px);
-    filter: hue-rotate(270deg);
-  }
-  80% {
-    transform: translate(2px, 2px);
-    filter: hue-rotate(360deg);
-  }
+  0%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
+  20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+  40% { transform: translate(2px, -2px); filter: hue-rotate(180deg); }
+  60% { transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
+  80% { transform: translate(2px, 2px); filter: hue-rotate(360deg); }
 }
 
-/* Chromatic Aberration */
-.chromatic-effect {
-  position: relative;
-}
-
+.chromatic-effect { position: relative; }
 .chromatic-effect::before,
 .chromatic-effect::after {
   content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
 }
-
 .chromatic-effect::before {
   color: #ff0000;
   z-index: -1;
   animation: chromatic-red 2s infinite;
 }
-
 .chromatic-effect::after {
   color: #00ffff;
   z-index: -2;
   animation: chromatic-cyan 2s infinite;
 }
-
 @keyframes chromatic-red {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(-3px, -2px); }
 }
-
 @keyframes chromatic-cyan {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(3px, 2px); }
@@ -272,96 +260,116 @@
    ============================================ */
 .viewport-info {
   position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  right: 1.5rem;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
   z-index: 12;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
   opacity: 0;
   transition: opacity 0.3s ease;
+  letter-spacing: 0.05em;
 }
 
-.viewport:hover .viewport-info {
-  opacity: 1;
+.viewport:hover .viewport-info { opacity: 1; }
+
+.scene-counter,
+.time-display {
+  padding: 0.25rem 0.625rem;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* ============================================
-   Progress Container
+   Progress Bar
    ============================================ */
 .progress-container {
   position: absolute;
-  bottom: 1.5rem;
-  left: 1.5rem;
-  right: 1.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 12;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-full);
-  overflow: hidden;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--primary), #f97316);
+  box-shadow: 0 0 8px rgba(99,102,241,0.6);
   transition: width 0.1s linear;
 }
 
 /* ============================================
-   Viewport Controls
+   Viewport Controls — دکمه‌های پخش
    ============================================ */
 .viewport-controls {
   position: absolute;
-  bottom: 4rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 15;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.875rem;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.viewport:hover .viewport-controls {
-  opacity: 1;
-}
+.viewport:hover .viewport-controls { opacity: 1; }
 
 .control-btn {
-  width: 48px;
-  height: 48px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 50%;
-  color: white;
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .control-btn:hover:not(:disabled) {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: scale(1.1);
+  background: rgba(99,102,241,0.8);
+  border-color: rgba(99,102,241,0.6);
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
 }
 
 .control-btn:disabled {
-  opacity: 0.3;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
+/* دکمه play بزرگ */
 .control-btn-large {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(249,115,22,0.85));
+  border: 1px solid rgba(99,102,241,0.4);
+  box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+}
+
+.control-btn-large:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  transform: scale(1.06);
+  box-shadow: 0 6px 28px rgba(99,102,241,0.55);
+}
+
+.control-btn-large:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 /* ============================================
@@ -369,120 +377,76 @@
    ============================================ */
 .fullscreen-btn {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 1rem;
+  right: 1rem;
   z-index: 20;
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
-  color: white;
+  color: rgba(255,255,255,0.8);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   opacity: 0;
 }
 
-.viewport:hover .fullscreen-btn {
-  opacity: 1;
-}
+.viewport:hover .fullscreen-btn { opacity: 1; }
 
 .fullscreen-btn:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: scale(1.1);
+  background: rgba(99,102,241,0.75);
+  border-color: rgba(99,102,241,0.5);
+  color: white;
+  transform: scale(1.08);
 }
 
 /* ============================================
    Responsive
    ============================================ */
+@media (max-width: 1024px) {
+  .viewport { max-height: 70vh; }
+  .control-btn { width: 40px; height: 40px; }
+  .control-btn-large { width: 52px; height: 52px; }
+}
+
 @media (max-width: 768px) {
-  .viewport-stage {
-    padding: 1.5rem;
+  .viewport {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 50vh;
+    max-height: 58vh;
+    border-radius: var(--radius-lg);
   }
 
-  .scene-title {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+  .viewport.fullscreen {
+    max-height: 100vh;
+    border-radius: 0;
   }
 
-  .viewport-info {
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
-    font-size: 0.75rem;
-  }
-
-  .progress-container {
-    bottom: 1rem;
-    left: 1rem;
-    right: 1rem;
-  }
-
-  .viewport-controls {
-    bottom: 3rem;
-    gap: 0.75rem;
-  }
-
-  .control-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .control-btn-large {
-    width: 56px;
-    height: 56px;
-  }
-
-  .fullscreen-btn {
-    top: 1rem;
-    right: 1rem;
-    width: 36px;
-    height: 36px;
-  }
-
-  .fullscreen-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .letterbox {
-    height: 6%;
-  }
+  .scene-text { font-size: 1.5rem; }
+  .viewport-info { top: 0.75rem; left: 0.75rem; right: 0.75rem; }
+  .viewport-controls { bottom: 2rem; gap: 0.625rem; }
+  .control-btn { width: 38px; height: 38px; }
+  .control-btn-large { width: 50px; height: 50px; }
+  .fullscreen-btn { top: 0.75rem; right: 0.75rem; width: 32px; height: 32px; }
+  .letterbox { height: 6%; }
 }
 
 @media (max-width: 480px) {
-  .viewport-stage {
-    padding: 1rem;
-  }
+  .viewport { min-height: 38vh; max-height: 48vh; }
+  .control-btn { width: 34px; height: 34px; }
+  .control-btn-large { width: 46px; height: 46px; }
+  .viewport-controls { gap: 0.5rem; }
+}
 
-  .scene-title {
-    font-size: 0.875rem;
-  }
-
-  .control-btn {
-    width: 36px;
-    height: 36px;
-  }
-
-  .control-btn-large {
-    width: 48px;
-    height: 48px;
-  }
-
-  .control-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .control-btn-large svg {
-    width: 20px;
-    height: 20px;
-  }
+@media (max-width: 768px) and (orientation: landscape) {
+  .viewport { width: 100%; height: 82vh; max-height: 82vh; }
+  .viewport-controls { gap: 0.5rem; }
 }
 
 /* ============================================
@@ -496,194 +460,5 @@
   .film-grain {
     animation: none !important;
   }
-
-  .bg-image,
-  .control-btn,
-  .fullscreen-btn {
-    transition: none !important;
-  }
-}
-
-/*
- * اضافه کردن به انتهای Viewport.css
- */
-
-/* ============================================
-   Responsive - Tablet
-   ============================================ */
-@media (max-width: 1024px) {
-  .viewport {
-    max-width: 90%;
-    max-height: 70vh;
-  }
-
-  .viewport-controls {
-    padding: 0.75rem;
-    gap: 0.75rem;
-  }
-
-  .control-btn {
-    width: 40px;
-    height: 40px;
-  }
-
-  .control-btn-large {
-    width: 48px;
-    height: 48px;
-  }
-
-  .fullscreen-btn {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-/* ============================================
-   Responsive - Mobile (< 768px)
-   ============================================ */
-@media (max-width: 768px) {
-  .viewport {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    min-height: 50vh;
-    max-height: 60vh;
-    border-radius: var(--radius-lg);
-  }
-
-  /* اگه fullscreen هست */
-  .viewport.fullscreen {
-    max-height: 100vh;
-    border-radius: 0;
-  }
-
-  /* Content */
-  .viewport-content {
-    padding: 2rem 1rem;
-  }
-
-  .scene-text {
-    font-size: 1.5rem;
-  }
-
-  /* Info */
-  .viewport-info {
-    padding: 0.625rem 0.875rem;
-    font-size: 0.75rem;
-  }
-
-  .scene-counter,
-  .time-display {
-    font-size: 0.75rem;
-  }
-
-  /* Controls */
-  .viewport-controls {
-    padding: 0.625rem;
-    gap: 0.625rem;
-  }
-
-  .control-btn {
-    width: 36px;
-    height: 36px;
-  }
-
-  .control-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .control-btn-large {
-    width: 44px;
-    height: 44px;
-  }
-
-  .control-btn-large svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Fullscreen Button */
-  .fullscreen-btn {
-    width: 32px;
-    height: 32px;
-    top: 0.625rem;
-    right: 0.625rem;
-  }
-
-  .fullscreen-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  /* Progress */
-  .progress-container {
-    height: 3px;
-  }
-}
-
-/* ============================================
-   Responsive - Small Mobile (< 480px)
-   ============================================ */
-@media (max-width: 480px) {
-  .viewport {
-    min-height: 40vh;
-    max-height: 50vh;
-  }
-
-  .viewport-content {
-    padding: 1.5rem 0.75rem;
-  }
-
-  .scene-text {
-    font-size: 1.25rem;
-  }
-
-  .viewport-info {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.6875rem;
-  }
-
-  .viewport-controls {
-    padding: 0.5rem;
-    gap: 0.5rem;
-  }
-
-  .control-btn {
-    width: 32px;
-    height: 32px;
-  }
-
-  .control-btn-large {
-    width: 40px;
-    height: 40px;
-  }
-
-  .fullscreen-btn {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-/* ============================================
-   Landscape Mobile
-   ============================================ */
-@media (max-width: 768px) and (orientation: landscape) {
-  .viewport {
-    width: 100%;
-    height: 85vh;
-    max-height: 85vh;
-  }
-
-  .viewport-content {
-    padding: 1rem;
-  }
-
-  .scene-text {
-    font-size: 1.75rem;
-  }
-
-  .viewport-controls {
-    padding: 0.5rem;
-  }
+  .bg-image, .control-btn, .fullscreen-btn { transition: none !important; }
 }
