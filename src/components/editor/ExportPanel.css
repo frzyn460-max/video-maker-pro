@@ -1,0 +1,306 @@
+/*
+ * مسیر: /video-maker-pro/src/components/editor/ExportPanel.css
+ */
+
+/* ============================================================
+   Panel Container
+   ============================================================ */
+.export-panel {
+  width: 320px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  position: fixed; top: 80px; right: 1.5rem;
+  z-index: 1000;
+  max-height: calc(100vh - 100px);
+}
+
+[data-theme="dark"] .export-panel {
+  background: rgba(10,14,26,0.97);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── Header ── */
+.ep-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: white;
+  flex-shrink: 0;
+}
+
+.ep-title {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 1rem; font-weight: 700;
+}
+
+.ep-close {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.2); border: none; border-radius: 50%;
+  color: white; cursor: pointer; transition: all 0.18s ease;
+}
+.ep-close:hover { background: rgba(255,255,255,0.35); transform: scale(1.1); }
+
+/* ── Body ── */
+.ep-body {
+  padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  overflow-y: auto;
+}
+
+.ep-body::-webkit-scrollbar { width: 4px; }
+.ep-body::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.2); border-radius: 99px; }
+
+/* ── Info chips ── */
+.ep-info-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.ep-info-chip {
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem 0.625rem;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 99px;
+  font-size: 0.6875rem; font-weight: 700; color: var(--primary);
+}
+
+/* ── Fields ── */
+.ep-field { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.ep-label {
+  font-size: 0.625rem; font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.07em;
+}
+
+.ep-input {
+  height: 36px; padding: 0 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit; font-size: 0.8125rem;
+  transition: border-color 0.18s;
+}
+
+[data-theme="dark"] .ep-input { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.09); color: rgba(255,255,255,0.88); }
+.ep-input:focus { outline: none; border-color: rgba(239,68,68,0.5); }
+.ep-input:disabled { opacity: 0.4; }
+
+/* Quality grid */
+.ep-quality-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.375rem; }
+
+.ep-quality-btn {
+  height: 32px; padding: 0 0.5rem;
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s ease;
+}
+
+[data-theme="dark"] .ep-quality-btn { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.09); }
+.ep-quality-btn:hover:not(:disabled) { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+.ep-quality-btn.active { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.5); color: #ef4444; }
+.ep-quality-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Format row */
+.ep-format-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.375rem; }
+
+.ep-format-btn {
+  height: 32px;
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s ease;
+}
+
+[data-theme="dark"] .ep-format-btn { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.09); }
+.ep-format-btn:hover:not(:disabled) { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+.ep-format-btn.active { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.5); color: #ef4444; }
+.ep-format-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Capture row */
+.ep-capture-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.375rem; }
+
+.ep-capture-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+  height: 36px;
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s ease;
+}
+
+[data-theme="dark"] .ep-capture-btn { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.09); }
+.ep-capture-btn:hover:not(:disabled) { border-color: rgba(99,102,241,0.4); color: var(--primary); }
+.ep-capture-btn.active { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.4); color: var(--primary); }
+.ep-capture-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ── Countdown ── */
+.ep-countdown {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: var(--radius-lg);
+}
+
+.ep-cd-num { font-size: 3rem; font-weight: 900; color: var(--primary); line-height: 1; }
+.ep-cd-text { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* ── Recording status ── */
+.ep-rec-status {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-lg);
+}
+
+.ep-rec-indicator {
+  width: 12px; height: 12px;
+  background: #ef4444; border-radius: 50%;
+  flex-shrink: 0;
+  animation: rec-blink 1s ease-in-out infinite;
+}
+
+@keyframes rec-blink {
+  0%,100% { opacity: 1; box-shadow: 0 0 8px rgba(239,68,68,0.8); }
+  50% { opacity: 0.4; box-shadow: none; }
+}
+
+.ep-rec-info { flex: 1; display: flex; flex-direction: column; gap: 0.375rem; }
+
+.ep-rec-time { font-size: 0.8125rem; font-weight: 700; color: #ef4444; font-variant-numeric: tabular-nums; }
+
+.ep-rec-progress {
+  height: 4px; background: rgba(239,68,68,0.15); border-radius: 99px; overflow: hidden;
+}
+.ep-rec-fill {
+  height: 100%; background: linear-gradient(90deg, #ef4444, #f59e0b);
+  border-radius: 99px; transition: width 0.3s linear;
+  box-shadow: 0 0 6px rgba(239,68,68,0.5);
+}
+
+/* ── Processing ── */
+.ep-processing {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(245,158,11,0.07);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem; color: #f59e0b; font-weight: 600;
+}
+
+.ep-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(245,158,11,0.25);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Done ── */
+.ep-done {
+  padding: 0.75rem;
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.25);
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem; font-weight: 700; color: #10b981;
+  text-align: center;
+}
+
+/* ── Main button ── */
+.ep-main-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  width: 100%; height: 44px;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  border: none; border-radius: var(--radius-lg);
+  color: white;
+  font-family: inherit; font-size: 0.9375rem; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  box-shadow: 0 4px 14px rgba(239,68,68,0.35);
+  position: relative; overflow: hidden;
+}
+
+.ep-main-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%); transition: transform 0.4s ease;
+}
+
+.ep-main-btn:hover:not(:disabled)::before { transform: translateX(100%); }
+.ep-main-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,68,68,0.45); }
+.ep-main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.ep-main-btn.recording {
+  background: linear-gradient(135deg, #1f2937, #374151);
+  box-shadow: 0 0 0 2px #ef4444;
+  animation: rec-pulse 2s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%,100% { box-shadow: 0 0 0 2px #ef4444; }
+  50% { box-shadow: 0 0 0 4px rgba(239,68,68,0.4); }
+}
+
+.ep-stop-icon {
+  width: 14px; height: 14px; background: #ef4444; border-radius: 2px;
+}
+
+/* ── Divider ── */
+.ep-divider {
+  display: flex; align-items: center; gap: 0.75rem;
+  color: var(--text-tertiary); font-size: 0.6875rem;
+}
+.ep-divider::before, .ep-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-color);
+}
+[data-theme="dark"] .ep-divider::before, [data-theme="dark"] .ep-divider::after { background: rgba(255,255,255,0.07); }
+
+/* ── Project section ── */
+.ep-project-section { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+.ep-secondary-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.35rem;
+  height: 36px; padding: 0 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 0.75rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s ease;
+}
+
+[data-theme="dark"] .ep-secondary-btn { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.09); }
+.ep-secondary-btn:hover { border-color: rgba(99,102,241,0.4); color: var(--primary); background: rgba(99,102,241,0.06); }
+.ep-import-btn { cursor: pointer; }
+
+/* ── Note ── */
+.ep-note {
+  display: flex; align-items: flex-start; gap: 0.4rem;
+  padding: 0.625rem 0.75rem;
+  background: rgba(99,102,241,0.05);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: var(--radius-md);
+  font-size: 0.6875rem; color: var(--text-tertiary); line-height: 1.55;
+}
+.ep-note svg { flex-shrink: 0; color: var(--primary); margin-top: 0.1rem; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .export-panel { width: calc(100vw - 2rem); right: 1rem; }
+}

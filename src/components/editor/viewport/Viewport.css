@@ -1,11 +1,11 @@
 /* 
  * مسیر: /video-maker-pro/src/components/editor/viewport/Viewport.css
- * ✨ نسخه جدید - Cinematic Viewport
+ * ✨ نسخه پیشرفته - افکت‌های جدید
  */
 
-/* ============================================
+/* ============================================================
    Viewport Container
-   ============================================ */
+   ============================================================ */
 .viewport {
   position: relative;
   width: 100%;
@@ -14,17 +14,20 @@
   overflow: hidden;
   border-radius: var(--radius-xl);
   box-shadow:
-    0 25px 60px rgba(0,0,0,0.4),
+    0 25px 60px rgba(0,0,0,0.45),
     0 0 0 1px rgba(255,255,255,0.06),
     0 0 60px rgba(99,102,241,0.1),
     0 0 100px rgba(139,92,246,0.05);
   margin: 0 auto;
   transition: box-shadow 0.3s ease;
+  cursor: none;
 }
+
+.viewport:hover { cursor: default; }
 
 .viewport:hover {
   box-shadow:
-    0 30px 70px rgba(0,0,0,0.5),
+    0 30px 70px rgba(0,0,0,0.55),
     0 0 0 1px rgba(255,255,255,0.08),
     0 0 70px rgba(99,102,241,0.14),
     0 0 120px rgba(139,92,246,0.07);
@@ -37,326 +40,299 @@
   border-radius: 0;
   aspect-ratio: auto !important;
   max-height: none;
+  cursor: none;
 }
 
-/* ============================================
+/* ============================================================
    Empty State
-   ============================================ */
+   ============================================================ */
 .viewport-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   min-height: 360px;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
-  padding: 2.5rem;
-  text-align: center;
-  gap: 0.875rem;
-  position: relative;
-  overflow: hidden;
+  padding: 2.5rem; text-align: center; gap: 0.875rem;
+  position: relative; overflow: hidden;
 }
 
 .viewport-empty::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 30% 40%, rgba(99,102,241,0.06) 0%, transparent 60%),
-    radial-gradient(circle at 70% 60%, rgba(139,92,246,0.04) 0%, transparent 60%);
+    radial-gradient(circle at 30% 40%, rgba(99,102,241,0.07) 0%, transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(139,92,246,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 
-.empty-icon {
-  font-size: 3.5rem;
-  opacity: 0.4;
-}
+.empty-icon { font-size: 3.5rem; opacity: 0.35; }
+.viewport-empty h3 { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.viewport-empty p { font-size: 0.8125rem; color: var(--text-secondary); margin: 0; max-width: 280px; line-height: 1.6; }
 
-.viewport-empty h3 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.viewport-empty p {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  margin: 0;
-  max-width: 280px;
-  line-height: 1.6;
-}
-
-/* ============================================
+/* ============================================================
    Background
-   ============================================ */
+   ============================================================ */
 .viewport-background {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  position: absolute; inset: 0; z-index: 0;
 }
 
-.bg-image,
-.bg-video {
-  width: 100%;
-  height: 100%;
+.bg-image, .bg-video {
+  width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transform-origin: center center;
 }
 
-/* ============================================
-   Particles Canvas
-   ============================================ */
+.bg-gradient {
+  width: 100%; height: 100%;
+}
+
+/* ============================================================
+   Color Overlay
+   ============================================================ */
+.vp-color-overlay {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+}
+
+/* ============================================================
+   Particles
+   ============================================================ */
 .particles-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1;
-  pointer-events: none;
+  position: absolute; top: 0; left: 0;
+  width: 100% !important; height: 100% !important;
+  z-index: 3; pointer-events: none;
 }
 
-/* ============================================
+/* ============================================================
    Film Grain
-   ============================================ */
+   ============================================================ */
 .film-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.03) 2px,
-    rgba(255, 255, 255, 0.03) 4px
-  );
-  background-size: 100% 4px;
-  opacity: 0.15;
-  animation: grain 0.2s steps(10) infinite;
-  pointer-events: none;
+  position: absolute; inset: 0; z-index: 4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.12;
+  animation: grain 0.15s steps(8) infinite;
+  pointer-events: none; mix-blend-mode: overlay;
 }
 
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-3%, -5%); }
+  40%  { transform: translate(5%, 3%); }
+  60%  { transform: translate(-2%, 6%); }
+  80%  { transform: translate(4%, -2%); }
+  100% { transform: translate(-1%, 4%); }
 }
 
-/* ============================================
+/* ============================================================
+   Scan Lines
+   ============================================================ */
+.vp-scanlines {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.1) 3px,
+    rgba(0,0,0,0.1) 4px
+  );
+  opacity: 0.5;
+}
+
+/* ============================================================
    Letterbox
-   ============================================ */
+   ============================================================ */
 .letterbox {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 8%;
-  background: #000;
-  z-index: 10;
+  position: absolute; left: 0; right: 0; height: 8%;
+  background: #000; z-index: 8;
 }
 .letterbox-top { top: 0; }
 .letterbox-bottom { bottom: 0; }
 
-/* ============================================
-   Viewport Stage
-   ============================================ */
+/* ============================================================
+   Stage
+   ============================================================ */
 .viewport-stage {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute; inset: 0; z-index: 9;
+  display: flex; align-items: center; justify-content: center;
   padding: 2rem;
 }
 
-.scene-content {
-  text-align: center;
-  max-width: 90%;
-}
+.scene-content { text-align: center; max-width: 90%; }
 
 .scene-title {
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  margin-bottom: 1.25rem;
-  color: var(--accent);
-  opacity: 0.85;
+  font-size: 0.875rem;
+  text-transform: uppercase; letter-spacing: 0.3em;
+  margin-bottom: 1rem; color: var(--accent); opacity: 0.8;
 }
 
 .scene-text {
-  font-weight: 900;
-  line-height: 1.2;
-  word-break: break-word;
+  font-weight: 900; line-height: 1.25; word-break: break-word;
 }
 
-/* ============================================
-   Effects
-   ============================================ */
-.shake-effect { animation: shake 0.5s infinite; }
+.scene-subtitle {
+  margin-top: 1.25rem;
+  font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.65);
+  letter-spacing: 0.08em;
+}
+
+/* ─── Effects ─── */
+.shake-effect { animation: shake 0.4s ease-in-out infinite; }
 @keyframes shake {
-  0%, 100% { transform: translate(0, 0); }
-  10%, 30%, 50%, 70%, 90% { transform: translate(-2px, -2px); }
-  20%, 40%, 60%, 80% { transform: translate(2px, 2px); }
+  0%,100% { transform: translate(0,0) rotate(0); }
+  15% { transform: translate(-3px,-2px) rotate(-0.5deg); }
+  30% { transform: translate(3px,2px) rotate(0.5deg); }
+  45% { transform: translate(-2px,3px) rotate(-0.3deg); }
+  60% { transform: translate(2px,-2px) rotate(0.3deg); }
+  75% { transform: translate(-1px,1px); }
+  90% { transform: translate(1px,-1px); }
 }
 
-.glitch-effect { animation: glitch 1s infinite; }
+.glitch-effect { animation: glitch 1.2s infinite; position: relative; }
 @keyframes glitch {
-  0%, 100% { transform: translate(0); filter: hue-rotate(0deg); }
-  20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-  40% { transform: translate(2px, -2px); filter: hue-rotate(180deg); }
-  60% { transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
-  80% { transform: translate(2px, 2px); filter: hue-rotate(360deg); }
+  0%,94%,100% { transform: translate(0); filter: none; }
+  95% { transform: translate(-3px,0); filter: hue-rotate(90deg); }
+  96% { transform: translate(3px,0); filter: hue-rotate(-90deg); clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%); }
+  97% { transform: translate(0,-2px); filter: none; clip-path: none; }
+  98% { transform: translate(2px,2px); filter: hue-rotate(180deg); clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); }
+  99% { transform: translate(-1px,0); clip-path: none; }
 }
 
+/* Chromatic aberration */
 .chromatic-effect { position: relative; }
 .chromatic-effect::before,
 .chromatic-effect::after {
   content: attr(data-text);
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  font-weight: inherit; font-size: inherit; line-height: inherit;
 }
 .chromatic-effect::before {
-  color: #ff0000;
-  z-index: -1;
-  animation: chromatic-red 2s infinite;
+  color: #ff0055; z-index: -1;
+  animation: chr-r 2s infinite;
 }
 .chromatic-effect::after {
-  color: #00ffff;
-  z-index: -2;
-  animation: chromatic-cyan 2s infinite;
+  color: #00ffee; z-index: -2;
+  animation: chr-c 2s infinite;
 }
-@keyframes chromatic-red {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-3px, -2px); }
+@keyframes chr-r { 0%,100% { transform: translate(0); } 50% { transform: translate(-4px,-2px); } }
+@keyframes chr-c { 0%,100% { transform: translate(0); } 50% { transform: translate(4px,2px); } }
+
+/* Neon */
+.neon-effect {
+  text-shadow:
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px var(--primary),
+    0 0 82px var(--primary),
+    0 0 92px var(--primary),
+    0 0 102px var(--primary),
+    0 0 151px var(--primary) !important;
+  animation: neon-flicker 3s infinite alternate;
 }
-@keyframes chromatic-cyan {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(3px, 2px); }
+@keyframes neon-flicker {
+  0%,19%,21%,23%,25%,54%,56%,100% {
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px var(--primary), 0 0 82px var(--primary);
+  }
+  20%,24%,55% {
+    text-shadow: none;
+  }
 }
 
-/* ============================================
+/* Outline */
+.outline-effect {
+  -webkit-text-stroke: 2px currentColor;
+  color: transparent !important;
+  filter: drop-shadow(0 0 12px currentColor);
+}
+
+/* ============================================================
+   Glitch Overlay
+   ============================================================ */
+.glitch-overlay {
+  position: absolute; inset: 0; z-index: 6; pointer-events: none;
+  animation: glitch-scan 2s infinite;
+}
+@keyframes glitch-scan {
+  0%,90%,100% { background: transparent; }
+  92% { background: linear-gradient(transparent 20%, rgba(255,0,255,0.08) 20%, rgba(255,0,255,0.08) 25%, transparent 25%); }
+  94% { background: linear-gradient(transparent 50%, rgba(0,255,255,0.08) 50%, rgba(0,255,255,0.08) 55%, transparent 55%); }
+  96% { background: linear-gradient(transparent 70%, rgba(255,255,0,0.06) 70%, rgba(255,255,0,0.06) 75%, transparent 75%); }
+}
+
+/* ============================================================
    Vignette
-   ============================================ */
+   ============================================================ */
 .vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.7) 100%);
+  position: absolute; inset: 0; z-index: 10;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.85) 100%);
   pointer-events: none;
 }
 
-/* ============================================
-   Viewport Info
-   ============================================ */
+/* ============================================================
+   Info overlay
+   ============================================================ */
 .viewport-info {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  right: 1rem;
-  z-index: 12;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: absolute; top: 1rem; left: 1rem; right: 1rem; z-index: 15;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.6875rem; font-weight: 700;
   color: rgba(255,255,255,0.85);
-  font-size: 0.6875rem;
-  font-weight: 700;
   text-shadow: 0 1px 6px rgba(0,0,0,0.9);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  letter-spacing: 0.05em;
+  pointer-events: none;
 }
 
-.viewport:hover .viewport-info { opacity: 1; }
-
-.scene-counter,
-.time-display {
+.scene-counter, .time-display {
   padding: 0.25rem 0.625rem;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.6);
   backdrop-filter: blur(8px);
   border-radius: 5px;
   border: 1px solid rgba(255,255,255,0.1);
+  letter-spacing: 0.04em;
 }
 
-/* ============================================
+/* ============================================================
    Progress Bar
-   ============================================ */
+   ============================================================ */
 .progress-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 12;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 15;
+  height: 3px; background: rgba(255,255,255,0.08);
 }
 
 .progress-bar {
   height: 100%;
   background: linear-gradient(90deg, var(--primary), #f97316);
-  box-shadow: 0 0 8px rgba(99,102,241,0.6);
+  box-shadow: 0 0 10px rgba(99,102,241,0.7);
   transition: width 0.1s linear;
 }
 
-/* ============================================
-   Viewport Controls — دکمه‌های پخش
-   ============================================ */
+/* ============================================================
+   Controls
+   ============================================================ */
 .viewport-controls {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  z-index: 16;
+  display: flex; align-items: center; gap: 0.75rem;
+  pointer-events: auto;
 }
 
-.viewport:hover .viewport-controls { opacity: 1; }
-
 .control-btn {
-  width: 44px;
-  height: 44px;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
+  width: 44px; height: 44px;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 50%;
   color: rgba(255,255,255,0.85);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.22s ease;
 }
 
 .control-btn:hover:not(:disabled) {
   background: rgba(99,102,241,0.8);
   border-color: rgba(99,102,241,0.6);
-  color: white;
-  transform: scale(1.08);
+  color: white; transform: scale(1.1);
   box-shadow: 0 4px 16px rgba(99,102,241,0.4);
 }
 
-.control-btn:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
+.control-btn:disabled { opacity: 0.2; cursor: not-allowed; }
 
-/* دکمه play بزرگ */
 .control-btn-large {
-  width: 60px;
-  height: 60px;
+  width: 60px; height: 60px;
   background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(249,115,22,0.85));
   border: 1px solid rgba(99,102,241,0.4);
   box-shadow: 0 4px 20px rgba(99,102,241,0.4);
@@ -364,49 +340,71 @@
 
 .control-btn-large:hover:not(:disabled) {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  transform: scale(1.06);
+  transform: scale(1.07);
   box-shadow: 0 6px 28px rgba(99,102,241,0.55);
 }
 
-.control-btn-large:active:not(:disabled) {
-  transform: scale(0.97);
+.control-btn-large:active:not(:disabled) { transform: scale(0.95); }
+
+.vp-scene-dur {
+  padding: 0.25rem 0.625rem;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+  font-size: 0.6875rem; font-weight: 700; color: rgba(255,255,255,0.7);
 }
 
-/* ============================================
-   Fullscreen Button
-   ============================================ */
+/* ============================================================
+   Fullscreen button
+   ============================================================ */
 .fullscreen-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 20;
-  width: 36px;
-  height: 36px;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-md);
+  position: absolute; top: 1rem; right: 1rem; z-index: 18;
+  width: 36px; height: 36px;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-md);
   color: rgba(255,255,255,0.8);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
-  opacity: 0;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.22s ease;
 }
-
-.viewport:hover .fullscreen-btn { opacity: 1; }
 
 .fullscreen-btn:hover {
   background: rgba(99,102,241,0.75);
   border-color: rgba(99,102,241,0.5);
-  color: white;
-  transform: scale(1.08);
+  color: white; transform: scale(1.08);
 }
 
-/* ============================================
+/* ============================================================
+   Countdown
+   ============================================================ */
+.vp-countdown {
+  position: absolute; inset: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+}
+
+.vp-countdown-num {
+  font-size: 8rem; font-weight: 900;
+  color: white;
+  text-shadow: 0 0 40px rgba(99,102,241,0.8), 0 0 80px rgba(99,102,241,0.4);
+  display: block; line-height: 1;
+}
+
+/* ============================================================
+   Speed Badge
+   ============================================================ */
+.vp-speed-badge {
+  position: absolute; top: 1rem; left: 50%; transform: translateX(-50%);
+  z-index: 18;
+  padding: 0.2rem 0.625rem;
+  background: rgba(245,158,11,0.85); backdrop-filter: blur(8px);
+  border-radius: 20px;
+  font-size: 0.6875rem; font-weight: 800; color: white;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 10px rgba(245,158,11,0.4);
+}
+
+/* ============================================================
    Responsive
-   ============================================ */
+   ============================================================ */
 @media (max-width: 1024px) {
   .viewport { max-height: 70vh; }
   .control-btn { width: 40px; height: 40px; }
@@ -415,50 +413,32 @@
 
 @media (max-width: 768px) {
   .viewport {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    min-height: 50vh;
-    max-height: 58vh;
+    width: 100%; max-width: 100%;
+    height: auto; min-height: 50vh; max-height: 58vh;
     border-radius: var(--radius-lg);
   }
-
-  .viewport.fullscreen {
-    max-height: 100vh;
-    border-radius: 0;
-  }
-
-  .scene-text { font-size: 1.5rem; }
-  .viewport-info { top: 0.75rem; left: 0.75rem; right: 0.75rem; }
-  .viewport-controls { bottom: 2rem; gap: 0.625rem; }
-  .control-btn { width: 38px; height: 38px; }
+  .viewport.fullscreen { max-height: 100vh; border-radius: 0; }
+  .viewport-controls { bottom: 2rem; gap: 0.5rem; }
+  .control-btn { width: 36px; height: 36px; }
   .control-btn-large { width: 50px; height: 50px; }
-  .fullscreen-btn { top: 0.75rem; right: 0.75rem; width: 32px; height: 32px; }
+  .fullscreen-btn { top: 0.75rem; right: 0.75rem; width: 30px; height: 30px; }
   .letterbox { height: 6%; }
+  .vp-countdown-num { font-size: 5rem; }
 }
 
 @media (max-width: 480px) {
   .viewport { min-height: 38vh; max-height: 48vh; }
-  .control-btn { width: 34px; height: 34px; }
+  .control-btn { width: 32px; height: 32px; }
   .control-btn-large { width: 46px; height: 46px; }
-  .viewport-controls { gap: 0.5rem; }
 }
 
-@media (max-width: 768px) and (orientation: landscape) {
-  .viewport { width: 100%; height: 82vh; max-height: 82vh; }
-  .viewport-controls { gap: 0.5rem; }
-}
-
-/* ============================================
+/* ============================================================
    Accessibility
-   ============================================ */
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .shake-effect,
-  .glitch-effect,
-  .chromatic-effect::before,
-  .chromatic-effect::after,
-  .film-grain {
-    animation: none !important;
-  }
-  .bg-image, .control-btn, .fullscreen-btn { transition: none !important; }
+  .shake-effect { animation: none !important; }
+  .glitch-effect { animation: none !important; }
+  .neon-effect { animation: none !important; }
+  .film-grain { animation: none !important; }
+  .control-btn, .fullscreen-btn { transition: none; }
 }

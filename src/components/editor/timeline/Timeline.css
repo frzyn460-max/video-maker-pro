@@ -1,11 +1,11 @@
 /* 
  * مسیر: /video-maker-pro/src/components/editor/timeline/Timeline.css
- * ✨ نسخه جدید - Cinematic Timeline
+ * ✨ نسخه پیشرفته
  */
 
-/* ============================================
-   Timeline Container
-   ============================================ */
+/* ============================================================
+   Container
+   ============================================================ */
 .timeline {
   height: 100%;
   display: flex;
@@ -14,471 +14,366 @@
   position: relative;
 }
 
-[data-theme="dark"] .timeline {
-  background: rgba(10, 14, 26, 0.95);
-}
+[data-theme="dark"] .timeline { background: rgba(10,14,26,0.95); }
 
-/* ============================================
-   Timeline Header
-   ============================================ */
+/* ============================================================
+   Header
+   ============================================================ */
 .timeline-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.25rem;
+  padding: 0.625rem 1rem;
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
-  position: relative;
+  gap: 0.75rem;
 }
 
-[data-theme="dark"] .timeline-header {
-  background: rgba(8, 11, 22, 0.8);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
-}
+[data-theme="dark"] .timeline-header { background: rgba(8,11,22,0.8); border-color: rgba(255,255,255,0.06); }
 
-.timeline-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+.timeline-info { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
 
 .timeline-title {
-  font-size: 0.75rem;
-  font-weight: 700;
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.6875rem; font-weight: 700;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
 }
 
-[data-theme="dark"] .timeline-title {
-  color: rgba(255, 255, 255, 0.5);
-}
+[data-theme="dark"] .timeline-title { color: rgba(255,255,255,0.5); }
 
 .timeline-duration {
-  font-size: 0.6875rem;
-  font-weight: 700;
+  font-size: 0.6875rem; font-weight: 700;
   color: var(--primary);
-  padding: 0.2rem 0.625rem;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  padding: 0.15rem 0.5rem;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
   border-radius: 99px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
-/* ── دکمه افزودن صحنه ── */
-.timeline-header .editor-btn,
-.timeline-header button[class*="btn"] {
-  height: 30px;
-  font-size: 0.75rem;
-  padding: 0 0.75rem;
-  gap: 0.3rem;
+/* ─── Toolbar ─── */
+.tl-toolbar { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; }
+
+.tl-tool-btn {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.18s ease;
 }
 
-/* ============================================
-   Timeline Track
-   ============================================ */
+[data-theme="dark"] .tl-tool-btn { border-color: rgba(255,255,255,0.08); }
+
+.tl-tool-btn:hover:not(:disabled) { border-color: rgba(99,102,241,0.4); color: var(--primary); background: rgba(99,102,241,0.06); }
+.tl-tool-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.tl-tool-btn.tl-del-btn { display: flex; gap: 0.25rem; width: auto; padding: 0 0.5rem; font-size: 0.6875rem; font-weight: 700; }
+.tl-tool-btn.tl-del-btn:hover:not(:disabled) { border-color: rgba(239,68,68,0.4); color: #ef4444; background: rgba(239,68,68,0.06); }
+
+.tl-zoom-label { font-size: 0.625rem; font-weight: 700; color: var(--text-tertiary); min-width: 28px; text-align: center; }
+
+.tl-divider { width: 1px; height: 16px; background: var(--border-color); margin: 0 0.15rem; }
+[data-theme="dark"] .tl-divider { background: rgba(255,255,255,0.08); }
+
+.tl-add-btn {
+  display: flex; align-items: center; gap: 0.3rem;
+  height: 28px; padding: 0 0.625rem;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: var(--radius-md);
+  color: var(--primary);
+  font-family: inherit; font-size: 0.6875rem; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.tl-add-btn:hover { background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.14)); border-color: rgba(99,102,241,0.5); transform: translateY(-1px); }
+
+/* ============================================================
+   Track
+   ============================================================ */
 .timeline-track {
   flex: 1;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   position: relative;
+  min-height: 120px;
 }
 
-/* Scrollbar افقی */
-.timeline-track::-webkit-scrollbar {
-  height: 5px;
-}
-.timeline-track::-webkit-scrollbar-track {
-  background: transparent;
-}
-.timeline-track::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.25);
-  border-radius: 99px;
-}
-.timeline-track::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
-}
+.timeline-track::-webkit-scrollbar { height: 4px; }
+.timeline-track::-webkit-scrollbar-track { background: transparent; }
+.timeline-track::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.2); border-radius: 99px; }
+.timeline-track::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,0.35); }
 
 .scenes-container {
-  display: flex;
-  gap: 0.75rem;
+  display: flex; gap: 0.5rem;
   min-width: min-content;
   height: 100%;
   align-items: flex-start;
-  list-style: none;
-  padding: 0 0 0.5rem;
-  margin: 0;
+  list-style: none; padding: 0 0 0.5rem; margin: 0;
 }
 
-/* ============================================
-   Scene Item — کارت صحنه
-   ============================================ */
+/* Empty */
+.tl-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; height: 80px;
+  color: var(--text-tertiary); font-size: 0.8125rem;
+}
+
+/* ============================================================
+   Scene Item
+   ============================================================ */
 .scene-item {
   position: relative;
-  width: 160px;
-  min-width: 160px;
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 0.75rem;
+  padding: 0.625rem 0.75rem;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  user-select: none;
-  overflow: hidden;
+  transition: border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  user-select: none; overflow: hidden;
+  flex-shrink: 0;
 }
 
-/* خط رنگی بالای هر scene */
+[data-theme="dark"] .scene-item { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.08); }
+
 .scene-item::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 15%;
-  right: 15%;
-  height: 1px;
+  position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  opacity: 0; transition: opacity 0.22s;
 }
 
-.scene-item:hover::before,
-.scene-item.active::before {
-  opacity: 1;
-}
-
-[data-theme="dark"] .scene-item {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
-}
+.scene-item:hover::before, .scene-item.active::before { opacity: 1; }
 
 .scene-item:hover {
-  border-color: rgba(99, 102, 241, 0.35);
+  border-color: rgba(99,102,241,0.35);
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 
-[data-theme="dark"] .scene-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-}
+[data-theme="dark"] .scene-item:hover { background: rgba(255,255,255,0.05); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
 
 .scene-item.active {
-  border-color: rgba(99, 102, 241, 0.5);
-  background: linear-gradient(135deg,
-    rgba(99, 102, 241, 0.06) 0%,
-    rgba(249, 115, 22, 0.04) 100%
-  );
-  box-shadow: 0 0 0 1px rgba(99,102,241,0.15) inset,
-              0 4px 16px rgba(99,102,241,0.12);
+  border-color: rgba(99,102,241,0.5);
+  background: linear-gradient(135deg, rgba(99,102,241,0.07), rgba(249,115,22,0.04));
+  box-shadow: 0 0 0 1px rgba(99,102,241,0.15) inset, 0 4px 16px rgba(99,102,241,0.1);
 }
 
-[data-theme="dark"] .scene-item.active {
-  background: linear-gradient(135deg,
-    rgba(99, 102, 241, 0.1) 0%,
-    rgba(249, 115, 22, 0.06) 100%
-  );
+[data-theme="dark"] .scene-item.active { background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(249,115,22,0.06)); }
+
+.scene-item.tl-selected {
+  border-color: rgba(16,185,129,0.5);
+  background: linear-gradient(135deg, rgba(16,185,129,0.07), rgba(5,150,105,0.04));
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.15) inset;
 }
 
-/* ============================================
-   Scene Header
-   ============================================ */
-.scene-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.375rem;
-}
+/* ─── Header ─── */
+.scene-header { display: flex; align-items: center; gap: 0.35rem; }
 
 .scene-number {
-  width: 20px;
-  height: 20px;
+  width: 18px; height: 18px; flex-shrink: 0;
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.625rem;
-  font-weight: 800;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.35);
+  color: white; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.5625rem; font-weight: 800;
+  box-shadow: 0 2px 5px rgba(99,102,241,0.3);
 }
 
 .scene-drag-handle {
-  color: var(--text-tertiary);
-  cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+  color: var(--text-tertiary); cursor: grab; opacity: 0.4;
+  display: flex; align-items: center; transition: opacity 0.18s;
+}
+.scene-item:hover .scene-drag-handle { opacity: 1; }
+.scene-item:active .scene-drag-handle { cursor: grabbing; }
+
+.tl-check {
+  width: 16px; height: 16px; background: #10b981; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: white;
+  box-shadow: 0 2px 6px rgba(16,185,129,0.4);
 }
 
-.scene-item:hover .scene-drag-handle {
-  opacity: 1;
-}
-
-.scene-item:active .scene-drag-handle {
-  cursor: grabbing;
-}
-
-/* ============================================
-   Scene Preview
-   ============================================ */
-.scene-preview {
-  flex: 1;
-  min-height: 44px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
+/* ─── Preview ─── */
+.scene-preview { flex: 1; min-height: 36px; display: flex; flex-direction: column; gap: 0.2rem; }
 
 .scene-preview-title {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6875rem; font-weight: 700;
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-[data-theme="dark"] .scene-preview-title {
-  color: rgba(255, 255, 255, 0.88);
-}
+[data-theme="dark"] .scene-preview-title { color: rgba(255,255,255,0.88); }
 
 .scene-preview-content {
-  font-size: 0.6875rem;
-  color: var(--text-tertiary);
-  line-height: 1.45;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 0.625rem; color: var(--text-tertiary); line-height: 1.4;
+  overflow: hidden; display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
 
-[data-theme="dark"] .scene-preview-content {
-  color: rgba(255, 255, 255, 0.4);
-}
+[data-theme="dark"] .scene-preview-content { color: rgba(255,255,255,0.38); }
 
-/* ============================================
-   Scene Duration Badge
-   ============================================ */
+/* ─── Duration badge ─── */
 .scene-duration {
-  font-size: 0.625rem;
-  font-weight: 700;
-  color: #f59e0b;
-  padding: 0.2rem 0.5rem;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 4px;
-  text-align: center;
-  letter-spacing: 0.03em;
-  align-self: flex-start;
+  font-size: 0.5625rem; font-weight: 700; color: #f59e0b;
+  padding: 0.15rem 0.4rem;
+  background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 4px; align-self: flex-start; letter-spacing: 0.03em;
 }
 
-/* ============================================
-   Scene Actions
-   ============================================ */
+.tl-dur-editable { cursor: pointer; }
+.tl-dur-editable:hover { background: rgba(245,158,11,0.2); border-color: rgba(245,158,11,0.4); }
+
+/* Duration inline edit */
+.tl-dur-popup {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .tl-dur-popup { background: rgba(8,11,22,0.95); border-color: rgba(255,255,255,0.1); }
+
+.tl-dur-slider {
+  flex: 1; height: 4px;
+  background: rgba(245,158,11,0.2);
+  border-radius: 99px; outline: none; -webkit-appearance: none; appearance: none;
+  cursor: pointer;
+}
+
+.tl-dur-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px;
+  background: #f59e0b; border-radius: 50%; cursor: pointer;
+  box-shadow: 0 1px 4px rgba(245,158,11,0.5);
+}
+
+.tl-dur-slider::-moz-range-thumb {
+  width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; border: none; cursor: pointer;
+}
+
+.tl-dur-val { font-size: 0.625rem; font-weight: 700; color: #f59e0b; min-width: 24px; text-align: center; }
+
+/* ─── Actions ─── */
 .scene-actions {
-  display: flex;
-  gap: 0.375rem;
-  padding-top: 0.5rem;
+  display: flex; gap: 0.25rem;
+  padding-top: 0.375rem;
   border-top: 1px solid var(--border-color);
-  opacity: 0;
-  transform: translateY(2px);
-  transition: all 0.2s ease;
+  opacity: 0; transform: translateY(2px);
+  transition: all 0.18s ease;
 }
 
-.scene-item:hover .scene-actions {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-[data-theme="dark"] .scene-actions {
-  border-top-color: rgba(255, 255, 255, 0.07);
-}
+.scene-item:hover .scene-actions { opacity: 1; transform: translateY(0); }
+[data-theme="dark"] .scene-actions { border-top-color: rgba(255,255,255,0.06); }
 
 .scene-action-btn {
-  flex: 1;
-  height: 24px;
+  flex: 1; height: 22px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 5px;
+  border-radius: 4px;
   color: var(--text-tertiary);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.18s ease;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s ease;
   font-family: inherit;
 }
 
-.scene-action-btn:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: rgba(99,102,241,0.3);
-  color: var(--text-primary);
-}
+.scene-action-btn:hover:not(:disabled) { background: var(--bg-hover); border-color: rgba(99,102,241,0.3); color: var(--text-primary); }
+.scene-action-btn.delete:hover:not(:disabled) { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.35); color: #ef4444; }
+.scene-action-btn:disabled { opacity: 0.2; cursor: not-allowed; }
 
-.scene-action-btn.delete:hover:not(:disabled) {
-  background: rgba(99, 102, 241, 0.08);
-  border-color: rgba(99, 102, 241, 0.35);
-  color: var(--primary);
-}
-
-.scene-action-btn:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-}
-
-/* ============================================
-   Active Indicator
-   ============================================ */
+/* ─── Active indicator ─── */
 .scene-active-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, var(--primary), #f97316);
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
-/* ============================================
+/* ============================================================
    Playhead
-   ============================================ */
+   ============================================================ */
 .timeline-playhead {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  pointer-events: none;
-  z-index: 10;
+  position: absolute; top: 0; bottom: 0; width: 2px;
+  pointer-events: none; z-index: 10;
   transition: left 0.3s ease;
 }
 
 .playhead-line {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   background: var(--primary);
-  box-shadow: 0 0 8px rgba(99,102,241,0.6),
-              0 0 16px rgba(99,102,241,0.3);
+  box-shadow: 0 0 8px rgba(99,102,241,0.6), 0 0 16px rgba(99,102,241,0.3);
 }
 
 .playhead-handle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background: var(--primary);
-  border: 2px solid white;
-  border-radius: 50%;
+  width: 10px; height: 10px;
+  background: var(--primary); border: 2px solid white; border-radius: 50%;
   box-shadow: 0 2px 8px rgba(99,102,241,0.5);
 }
 
-/* ============================================
-   Timeline Scale
-   ============================================ */
+/* ============================================================
+   Scale
+   ============================================================ */
 .timeline-scale {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: flex;
+  padding: 0 1rem;
   height: 18px;
   background: var(--bg-primary);
   border-top: 1px solid var(--border-color);
-  display: flex;
-  padding: 0 1.25rem;
   overflow-x: auto;
-  overflow-y: hidden;
+  flex-shrink: 0;
+  gap: 0.5rem;
 }
 
-[data-theme="dark"] .timeline-scale {
-  background: rgba(8, 11, 22, 0.9);
-  border-top-color: rgba(255,255,255,0.06);
-}
-
+[data-theme="dark"] .timeline-scale { background: rgba(8,11,22,0.9); border-color: rgba(255,255,255,0.06); }
 .timeline-scale::-webkit-scrollbar { display: none; }
 
-.scale-mark {
-  position: relative;
-  flex: 0 0 auto;
-  width: 160px;
-  margin-right: 0.75rem;
-  display: flex;
-  align-items: center;
+.scale-mark { position: relative; display: flex; align-items: center; flex-shrink: 0; }
+.scale-line { width: 1px; height: 6px; background: rgba(99,102,241,0.3); }
+.scale-label { margin-right: 0.25rem; font-size: 0.5rem; color: var(--text-tertiary); font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
+
+/* ============================================================
+   Progress
+   ============================================================ */
+.tl-progress {
+  height: 2px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 99px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.scale-line {
-  width: 1px;
-  height: 6px;
-  background: rgba(99, 102, 241, 0.3);
+.tl-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #f97316);
+  box-shadow: 0 0 6px rgba(99,102,241,0.5);
+  transition: width 0.3s ease;
 }
 
-.scale-label {
-  margin-right: 0.375rem;
-  font-size: 0.5625rem;
-  color: var(--text-tertiary);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-/* ============================================
+/* ============================================================
    Responsive
-   ============================================ */
+   ============================================================ */
 @media (max-width: 768px) {
-  .timeline-header { padding: 0.625rem 1rem; }
-
-  .scene-item {
-    width: 136px;
-    min-width: 136px;
-    padding: 0.625rem;
-  }
-
-  .scene-preview-title { font-size: 0.6875rem; }
-  .scene-preview-content { font-size: 0.625rem; }
-
-  .timeline-track { padding: 0.875rem 1rem; }
-  .scenes-container { gap: 0.625rem; }
+  .timeline-header { padding: 0.5rem 0.75rem; }
+  .scene-item { padding: 0.5rem 0.625rem; }
+  .timeline-track { padding: 0.625rem 0.75rem; }
+  .tl-zoom-label { display: none; }
 }
 
-@media (max-width: 480px) {
-  .scene-item {
-    width: 120px;
-    min-width: 120px;
-    padding: 0.5rem;
-    gap: 0.5rem;
-  }
-
-  .scene-number { width: 18px; height: 18px; font-size: 0.5625rem; }
-  .scene-preview { min-height: 36px; }
-  .scene-preview-title { font-size: 0.625rem; }
-  .scene-duration { font-size: 0.5625rem; }
-}
-
-/* ============================================
+/* ============================================================
    Accessibility
-   ============================================ */
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .scene-item,
-  .timeline-playhead,
-  .scene-action-btn,
-  .scene-actions {
-    transition: none;
-  }
+  .scene-item, .timeline-playhead, .scene-action-btn, .scene-actions { transition: none; }
 }
 
-@media (prefers-contrast: high) {
-  .scene-item { border-width: 2px; }
-  .scene-item.active { border-width: 3px; }
-}
+@media (prefers-contrast: high) { .scene-item { border-width: 2px; } .scene-item.active { border-width: 3px; } }

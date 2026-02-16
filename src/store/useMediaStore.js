@@ -1,116 +1,118 @@
 /* 
  * مسیر: /video-maker-pro/src/store/useMediaStore.js
+ * ✨ نسخه کامل - مدیریت کامل مدیا با Waveform
  */
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { subscribeWithSelector } from 'zustand/middleware';
 
 const useMediaStore = create(
-  persist(
-    (set, get) => ({
-      // مدیا
-      backgroundMedia: null,
-      audioTrack: null,
-      uploadedImages: [],
-      uploadedVideos: [],
-      uploadedAudios: [],
+  subscribeWithSelector((set, get) => ({
+    // ── Background media ──────────────────────────────────
+    backgroundMedia: null,
 
-      // ✅ تنظیم پس‌زمینه (عکس یا ویدیو)
-      setBackgroundMedia: (media) => set({ backgroundMedia: media }),
+    addBackgroundMedia: (media) => set({ backgroundMedia: media }),
+    removeBackgroundMedia: () => set({ backgroundMedia: null }),
 
-      // ✅ اضافه کردن پس‌زمینه (عکس یا ویدیو)
-      addBackgroundMedia: (media) => set({ backgroundMedia: media }),
+    // ── Audio track ───────────────────────────────────────
+    audioTrack: null,
+    audioElement: null,       // HTMLAudioElement در حافظه
+    audioPlaying: false,
+    audioCurrentTime: 0,
+    audioDuration: 0,
+    audioVolume: 70,
+    audioMuted: false,
+    audioWaveform: [],        // داده‌های waveform
 
-      // ✅ حذف پس‌زمینه
-      removeBackgroundMedia: () => set({ backgroundMedia: null }),
-
-      // ✅ تنظیم موسیقی
-      setAudioTrack: (audio) => set({ audioTrack: audio }),
-
-      // ✅ اضافه کردن موسیقی
-      addAudioTrack: (audio) => set({ audioTrack: audio }),
-
-      // ✅ حذف موسیقی
-      removeAudioTrack: () => set({ audioTrack: null }),
-
-      // ✅ اضافه کردن عکس به لیست
-      addImage: (image) => set((state) => ({
-        uploadedImages: [...state.uploadedImages, image]
-      })),
-
-      // ✅ اضافه کردن ویدیو به لیست
-      addVideo: (video) => set((state) => ({
-        uploadedVideos: [...state.uploadedVideos, video]
-      })),
-
-      // ✅ اضافه کردن موسیقی به لیست
-      addAudio: (audio) => set((state) => ({
-        uploadedAudios: [...state.uploadedAudios, audio]
-      })),
-
-      // ✅ حذف عکس
-      removeImage: (id) => set((state) => ({
-        uploadedImages: state.uploadedImages.filter(img => img.id !== id)
-      })),
-
-      // ✅ حذف ویدیو
-      removeVideo: (id) => set((state) => ({
-        uploadedVideos: state.uploadedVideos.filter(vid => vid.id !== id)
-      })),
-
-      // ✅ حذف موسیقی
-      removeAudio: (id) => set((state) => ({
-        uploadedAudios: state.uploadedAudios.filter(aud => aud.id !== id)
-      })),
-
-      // ✅ پاک کردن همه مدیا
-      clearAllMedia: () => set({
-        backgroundMedia: null,
-        audioTrack: null,
-        uploadedImages: [],
-        uploadedVideos: [],
-        uploadedAudios: []
-      }),
-
-      // ✅ دریافت حجم کل فایل‌ها
-      getTotalSize: () => {
-        const state = get();
-        let totalSize = 0;
-
-        if (state.backgroundMedia?.size) {
-          totalSize += state.backgroundMedia.size;
-        }
-
-        if (state.audioTrack?.size) {
-          totalSize += state.audioTrack.size;
-        }
-
-        state.uploadedImages.forEach(img => {
-          if (img.size) totalSize += img.size;
-        });
-
-        state.uploadedVideos.forEach(vid => {
-          if (vid.size) totalSize += vid.size;
-        });
-
-        state.uploadedAudios.forEach(aud => {
-          if (aud.size) totalSize += aud.size;
-        });
-
-        return totalSize;
+    setAudioTrack: (track) => set({ audioTrack: track }),
+    removeAudioTrack: () => {
+      const { audioElement } = get();
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.src = '';
       }
-    }),
-    {
-      name: 'media-storage',
-      partialize: (state) => ({
-        // فقط metadata ذخیره می‌شه، نه خود فایل‌ها
-        backgroundMedia: state.backgroundMedia ? {
-          type: state.backgroundMedia.type,
-          name: state.backgroundMedia.name
-        } : null
-      })
-    }
-  )
+      set({
+        audioTrack: null,
+        audioElement: null,
+        audioPlaying: false,
+        audioCurrentTime: 0,
+        audioDuration: 0,
+        audioWaveform: [],
+      });
+    },
+
+    setAudioElement: (el) => set({ audioElement: el }),
+    setAudioPlaying: (p) => set({ audioPlaying: p }),
+    setAudioCurrentTime: (t) => set({ audioCurrentTime: t }),
+    setAudioDuration: (d) => set({ audioDuration: d }),
+    setAudioVolume: (v) => {
+      const { audioElement } = get();
+      if (audioElement) audioElement.volume = v / 100;
+      set({ audioVolume: v });
+    },
+    setAudioMuted: (m) => {
+      const { audioElement } = get();
+      if (audioElement) audioElement.muted = m;
+      set({ audioMuted: m });
+    },
+
+    toggleAudioPlay: () => {
+      const { audioElement, audioPlaying } = get();
+      if (!audioElement) return;
+      if (audioPlaying) {
+        audioElement.pause();
+        set({ audioPlaying: false });
+      } else {
+        audioElement.play().catch(() => {});
+        set({ audioPlaying: true });
+      }
+    },
+
+    seekAudio: (time) => {
+      const { audioElement } = get();
+      if (!audioElement) return;
+      audioElement.currentTime = time;
+      set({ audioCurrentTime: time });
+    },
+
+    // Waveform data از AudioContext
+    generateWaveform: async (url) => {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const res = await fetch(url);
+        const buf = await res.arrayBuffer();
+        const decoded = await ctx.decodeAudioData(buf);
+        const raw = decoded.getChannelData(0);
+        const samples = 80;
+        const blockSize = Math.floor(raw.length / samples);
+        const waveform = Array.from({ length: samples }, (_, i) => {
+          const start = i * blockSize;
+          let sum = 0;
+          for (let j = start; j < start + blockSize; j++) {
+            sum += Math.abs(raw[j] || 0);
+          }
+          return Math.min(1, (sum / blockSize) * 3);
+        });
+        set({ audioWaveform: waveform });
+        ctx.close();
+      } catch {
+        set({ audioWaveform: [] });
+      }
+    },
+
+    // ── Extra media (overlays, watermarks) ───────────────
+    overlays: [],
+
+    addOverlay: (overlay) => {
+      set(state => ({
+        overlays: [...state.overlays, { id: Date.now().toString(), ...overlay }],
+      }));
+    },
+
+    removeOverlay: (id) => {
+      set(state => ({ overlays: state.overlays.filter(o => o.id !== id) }));
+    },
+  }))
 );
 
 export default useMediaStore;
