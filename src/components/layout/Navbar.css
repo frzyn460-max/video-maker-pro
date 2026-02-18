@@ -483,3 +483,176 @@
   outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
+
+/*
+ * مسیر: /video-maker-pro/src/components/layout/NavbarUserDropdown.css
+ * این استایل‌ها باید به انتهای Navbar.css اضافه شوند
+ */
+
+/* ============================================
+   User Avatar Button
+   ============================================ */
+.navbar-user {
+  position: relative;
+}
+
+.navbar-avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.875rem 0.4rem 0.5rem;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.navbar-avatar-btn:hover {
+  border-color: var(--primary);
+  background: var(--bg-hover);
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.15);
+  transform: translateY(-1px);
+}
+
+.navbar-avatar-emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.1));
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.navbar-avatar-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   User Dropdown Menu
+   ============================================ */
+.navbar-user-menu {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: 0;
+  min-width: 220px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    0 4px 16px rgba(99, 102, 241, 0.1),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+  overflow: hidden;
+  z-index: var(--z-dropdown);
+  animation: dropdownIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* rainbow top line */
+.navbar-user-menu::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), #ec4899);
+}
+
+/* ── Header ── */
+.num-header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem 0.875rem;
+}
+
+.num-avatar {
+  font-size: 2rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.1));
+  border: 1.5px solid var(--border-color);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.num-name {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.num-email {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  direction: ltr;
+  text-align: right;
+  margin-top: 0.125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+/* ── Divider ── */
+.num-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0.25rem 0;
+}
+
+/* ── Menu Items ── */
+.num-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.125rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: right;
+}
+
+.num-item:hover {
+  background: var(--bg-hover);
+  color: var(--primary);
+  padding-right: 1.5rem;
+}
+
+.num-item-danger {
+  color: #ef4444;
+}
+
+.num-item-danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+}

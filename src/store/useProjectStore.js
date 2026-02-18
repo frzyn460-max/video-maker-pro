@@ -1,5 +1,6 @@
 /*
  * مسیر: /video-maker-pro/src/store/useProjectStore.js
+ * ✨ نسخه فیکس شده - تضمینی
  */
 
 import { create } from 'zustand';
@@ -81,8 +82,17 @@ const useProjectStore = create(
 
       // ساخت پروژه جدید
       createProject: async (name) => {
+        const userId = localStorage.getItem('userId');
+        
+        if (!userId) {
+          console.error('❌ No userId! User must be logged in.');
+          alert('لطفاً ابتدا وارد حساب کاربری شوید');
+          return null;
+        }
+
         const newProject = {
           id: Date.now().toString(),
+          userId: userId,
           name: name || 'پروژه جدید',
           createdAt: Date.now(),
           lastModified: Date.now(),
@@ -92,60 +102,71 @@ const useProjectStore = create(
           duration: DEFAULT_SCENES.reduce((acc, scene) => acc + (scene.duration || 5), 0)
         };
 
+        // بررسی مجدد userId قبل از ذخیره
+        console.log('🆕 Creating project for userId:', userId);
+
         set(state => ({
           projects: [newProject, ...state.projects]
         }));
 
         // ذخیره در localStorage
-        const projects = get().projects;
-        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
+        const allProjects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(allProjects));
 
-        console.log('✅ Project created:', newProject.name, newProject.id);
+        console.log('✅ Project created:', newProject.name, 'ID:', newProject.id);
         return newProject;
       },
 
       // به‌روزرسانی پروژه
       updateProject: async (projectId, updates) => {
+        const userId = localStorage.getItem('userId');
+        
         set(state => ({
-          projects: state.projects.map(project =>
-            project.id === projectId
-              ? {
-                  ...project,
-                  ...updates,
-                  lastModified: Date.now()
-                }
-              : project
-          )
+          projects: state.projects.map(project => {
+            if (project.id === projectId && project.userId === userId) {
+              return {
+                ...project,
+                ...updates,
+                lastModified: Date.now()
+              };
+            }
+            return project;
+          })
         }));
 
-        // ذخیره در localStorage
-        const projects = get().projects;
-        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
-
+        const allProjects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(allProjects));
         console.log('✅ Project updated:', projectId);
       },
 
       // حذف پروژه
       deleteProject: async (projectId) => {
+        const userId = localStorage.getItem('userId');
+        
         set(state => ({
-          projects: state.projects.filter(project => project.id !== projectId)
+          projects: state.projects.filter(project => 
+            !(project.id === projectId && project.userId === userId)
+          )
         }));
 
-        // ذخیره در localStorage
-        const projects = get().projects;
-        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
-
+        const allProjects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(allProjects));
         console.log('✅ Project deleted:', projectId);
       },
 
       // کپی پروژه
       duplicateProject: async (projectId) => {
-        const originalProject = get().projects.find(p => p.id === projectId);
+        const userId = localStorage.getItem('userId');
+        const originalProject = get().projects.find(p => 
+          p.id === projectId && p.userId === userId
+        );
+        
         if (!originalProject) return null;
 
         const duplicatedProject = {
           ...originalProject,
           id: Date.now().toString(),
+          userId: userId,
           name: `${originalProject.name} (کپی)`,
           createdAt: Date.now(),
           lastModified: Date.now()
@@ -155,17 +176,18 @@ const useProjectStore = create(
           projects: [duplicatedProject, ...state.projects]
         }));
 
-        // ذخیره در localStorage
-        const projects = get().projects;
-        localStorage.setItem('video-maker-projects', JSON.stringify(projects));
-
+        const allProjects = get().projects;
+        localStorage.setItem('video-maker-projects', JSON.stringify(allProjects));
         console.log('✅ Project duplicated:', duplicatedProject.name);
         return duplicatedProject;
       },
 
       // گرفتن یک پروژه
       getProject: (projectId) => {
-        return get().projects.find(p => p.id === projectId);
+        const userId = localStorage.getItem('userId');
+        return get().projects.find(p => 
+          p.id === projectId && p.userId === userId
+        );
       }
     }),
     {
@@ -173,5 +195,21 @@ const useProjectStore = create(
     }
   )
 );
+
+// ═══════════════════════════════════════════════════════════
+// SELECTORS - برای استفاده در کامپوننت‌ها
+// ═══════════════════════════════════════════════════════════
+
+// گرفتن فقط پروژه‌های کاربر فعلی
+export const useUserProjects = () => {
+  const allProjects = useProjectStore(state => state.projects);
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  
+  if (!userId) return [];
+  
+  const filtered = allProjects.filter(p => p.userId === userId);
+  console.log('🔍 Filtered projects for', userId, ':', filtered.length, 'out of', allProjects.length);
+  return filtered;
+};
 
 export default useProjectStore;
